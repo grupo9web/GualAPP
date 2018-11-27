@@ -933,11 +933,14 @@ loop = function () {
     }
 
     if (player.y > 580) {
-        gameStates.currentState = gameStates.gameOver();
-        gameStates.currentState;
+        //gameStates.currentState = gameStates.gameOver();
+        //gameStates.currentState;
 
-        player.x = plataformas[plataformas.length - 1].x + 20;
-        player.y = plataformas[plataformas.length - 1].y - player.alto + 10;
+        gravity = 0; vy = 0; vx = 0;
+        player.y_vel = 0;
+        player.x = 0;
+        player.y = 0;
+        
     }
 
     //score++;
