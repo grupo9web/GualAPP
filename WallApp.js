@@ -49,6 +49,15 @@ var curretStateId = 0;
 const gameStates = {
     currentState: undefined,
     startGame() {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////    
+        var audio = document.getElementById('cancion_fondo');
+        audio.src = 'musica/Musica Principal 2.mp3';
+        audio.load();
+        audio.play();
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         container.style.display = "initial";
         menu.style.display = "none"
         curretStateId = 1;
@@ -57,7 +66,17 @@ const gameStates = {
         //El juego en si
     },
     menu() {
-        document.addEventListener('click', mouseCliked, false)
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////  
+
+        var audio = document.getElementById('cancion_fondo');
+        audio.src = 'musica/Dueto Rains of Castamere.mp3';
+        audio.load();
+        audio.play();
+        document.addEventListener('click', mouseCliked, false);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     },
     menuSetup() {
         drawMenu();
@@ -132,6 +151,7 @@ window.onload = function () {
     //getMobileOperatingSystem();
     gameStates.currentState = gameStates.menuSetup()
     gameStates.currentState;
+
 
     localStorage.clear();
     
