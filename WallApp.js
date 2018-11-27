@@ -16,12 +16,12 @@ canvas1height = 400;
 var menu = document.getElementById("menu");
 var cmenu = menu.getContext("2d");
 
-var userName;
+
 
 var container = document.getElementById("container");
 container.style.display = "none";
 
-
+var playing;
 var mouseX;
 var mouseY;
 
@@ -49,7 +49,11 @@ var curretStateId = 0;
 const gameStates = {
     currentState: undefined,
     startGame() {
+        playing = true;
 
+
+        player.x = plataformas[plataformas.length - 1].x + 20;
+        player.y = plataformas[plataformas.length - 1].y - player.alto + 10;
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////    
         var audio = document.getElementById('cancion_fondo');
@@ -61,6 +65,8 @@ const gameStates = {
         container.style.display = "initial";
         menu.style.display = "none"
         curretStateId = 1;
+        score = 0;
+
     },
     game() {
         //El juego en si
@@ -83,11 +89,9 @@ const gameStates = {
         curretStateId = 0;
         gameStates.currentState = gameStates.menu();
         gameStates.currentState;
-
-
     },
     gameOver() {
-
+        playing = false;
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////// PUNTUACIONES //////////////////////////////////////////////////////
 
@@ -97,7 +101,7 @@ const gameStates = {
 
 
         
-        mejoresPuntuaciones.push(new puntuacionNombre(userName, score));
+        mejoresPuntuaciones.push(new puntuacionNombre("Juan Pedro", score));
 
         localStorage.setItem("arrayPuntuaciones", JSON.stringify(mejoresPuntuaciones));
         mejoresPuntuaciones = JSON.parse(localStorage.getItem("arrayPuntuaciones"));
@@ -112,17 +116,17 @@ const gameStates = {
 
 
 
-
+        score = 0;
         container.style.display = "none";
         menu.style.display = "initial"
         curretStateId = 0;
-        gameStates.currentState = gameStates.menu();
+
+        gameStates.currentState = gameStates.menuSetup();
         gameStates.currentState;
     },
     showScore() {
-        curretStateId = 2;
         drawScores();
-        
+        curretStateId = 2;
     },
     closeScore() {
         drawMenu()
@@ -151,11 +155,6 @@ const gameStates = {
 
 
 window.onload = function () {
-
-
-    userName = prompt("Please enter your name", "Hulio");
-
-
     //getMobileOperatingSystem();
     gameStates.currentState = gameStates.menuSetup()
     gameStates.currentState;
@@ -390,7 +389,6 @@ var position = 0;
 
 
 var plataformas = [];
-var varAux = 0;
 
 
 
@@ -413,27 +411,19 @@ function Platform() {
 
     if (score > 2500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2, 2];
-        if (varAux == 3) {            
-            setDificultad();
-            varAux++;
-        }
+        setDificultad();
     } else if (score > 1500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2];
-        if (varAux == 2) {            
-            setDificultad();
-            varAux++;
-        }
+        setDificultad();
     } else if (score > 500) {
         this.probabilidad = [0, 0, 0, 1, 2, 2];
-        if (varAux == 1) {            
-            setDificultad();
-            varAux++;
-        }
+        setDificultad();
     } else if (score > 100) {
+
         this.probabilidad = [0, 0, 0, 1, 2];
-        if (varAux == 0) {            
+        if (newLevel) {
+            background.src = "wallpp.png";
             setDificultad();
-            varAux++;
         }
         newLevel = false;
     } else {
@@ -725,7 +715,7 @@ function putasColisionesMeComenLosPutosCojones2() {
             }
 
             if (!puta.puntuado) {
-                score += 10;
+                if(playing)  score += 10;
                 plataformas[i].puntuado = true;
             }
 
@@ -754,7 +744,7 @@ function putasColisionesMeComenLosPutosCojones2() {
             specialSprites = true;
             isPowerUp = true;
 
-            score += 50;
+            if(playing) score += 50;
             //setDificultad();
 
             //Intervalo para el PU
@@ -786,6 +776,28 @@ function putasColisionesMeComenLosPutosCojones2() {
 }
 
 
+function reset () {
+    score = 0;
+
+}
+
+
+function gameOver() {
+    plataformas.forEach(function(aux, i){
+        aux.y -= 12;
+    });
+
+    if(player.y > height / 2){
+        player.y -= 8;
+        player.y_vel = 0;
+    }else if(player.y + player.alto > height){
+        gameStates.currentState = gameStates.gameOver();
+        gameStates.currentState;
+    }
+
+}
+
+
 function gestionPowerUp() {
 
 
@@ -814,7 +826,48 @@ function gestionPowerUp() {
 }
 
 function setDificultad() {
-    background.src = "wallpp.png";
+    /*if (score >= 500) {
+        background.src = "wallpp.png";
+
+        vx -= 0.05;
+        vy += 1;
+
+        function intervalTrigger() {
+            return window.setInterval(function () {
+                background.src = "wall.png";
+                window.clearInterval(id);
+            }, 1000);
+        };
+        var id = intervalTrigger();
+    }
+    if (score >= 1000) {
+
+        vx -= 0.025;
+        vy += 1;
+
+        function intervalTrigger() {
+            background.src = "wallpp.png";
+            return window.setInterval(function () {
+                background.src = "wall.png";
+                window.clearInterval(id2);
+            }, 1000);
+        };
+        var id2 = intervalTrigger();
+    }
+    if (score >= 2000) {
+
+        vx -= 0.025;
+        vy += 1;
+
+
+        function intervalTrigger3() {
+            background.src = "wallpp.png";
+            return window.setInterval(function () {
+                background.src = "wall.png";
+            }, 1000);
+        };
+        var id3 = intervalTrigger3();
+    }*/
     function intervalTrigger() {
         return window.setInterval(function () {
             background.src = "wall.png";
@@ -939,14 +992,14 @@ loop = function () {
     }
 
     if (player.y > 580) {
-        //gameStates.currentState = gameStates.gameOver();
-        //gameStates.currentState;
-
-        gravity = 0; vy = 0; vx = 0;
-        player.y_vel = 0;
-        player.x = 0;
-        player.y = 0;
-        
+        gameOver()
+        /*
+        if(playing  == true) {
+            gameStates.currentState = gameStates.gameOver();
+            gameStates.currentState;
+        }
+        player.x = plataformas[plataformas.length - 1].x + 20;
+        player.y = plataformas[plataformas.length - 1].y - player.alto + 10;*/
     }
 
     //score++;
