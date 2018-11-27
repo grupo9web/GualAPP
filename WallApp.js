@@ -384,6 +384,7 @@ var position = 0;
 
 
 var plataformas = [];
+var varAux = 0;
 
 
 
@@ -406,19 +407,27 @@ function Platform() {
 
     if (score > 2500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2, 2];
-        setDificultad();
+        if (varAux == 3) {            
+            setDificultad();
+            varAux++;
+        }
     } else if (score > 1500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2];
-        setDificultad();
+        if (varAux == 2) {            
+            setDificultad();
+            varAux++;
+        }
     } else if (score > 500) {
         this.probabilidad = [0, 0, 0, 1, 2, 2];
-        setDificultad();
-    } else if (score > 100) {
-
-        this.probabilidad = [0, 0, 0, 1, 2];
-        if (newLevel) {
-            background.src = "wallpp.png";
+        if (varAux == 1) {            
             setDificultad();
+            varAux++;
+        }
+    } else if (score > 100) {
+        this.probabilidad = [0, 0, 0, 1, 2];
+        if (varAux == 0) {            
+            setDificultad();
+            varAux++;
         }
         newLevel = false;
     } else {
@@ -799,48 +808,7 @@ function gestionPowerUp() {
 }
 
 function setDificultad() {
-    /*if (score >= 500) {
-        background.src = "wallpp.png";
-
-        vx -= 0.05;
-        vy += 1;
-
-        function intervalTrigger() {
-            return window.setInterval(function () {
-                background.src = "wall.png";
-                window.clearInterval(id);
-            }, 1000);
-        };
-        var id = intervalTrigger();
-    }
-    if (score >= 1000) {
-
-        vx -= 0.025;
-        vy += 1;
-
-        function intervalTrigger() {
-            background.src = "wallpp.png";
-            return window.setInterval(function () {
-                background.src = "wall.png";
-                window.clearInterval(id2);
-            }, 1000);
-        };
-        var id2 = intervalTrigger();
-    }
-    if (score >= 2000) {
-
-        vx -= 0.025;
-        vy += 1;
-
-
-        function intervalTrigger3() {
-            background.src = "wallpp.png";
-            return window.setInterval(function () {
-                background.src = "wall.png";
-            }, 1000);
-        };
-        var id3 = intervalTrigger3();
-    }*/
+    background.src = "wallpp.png";
     function intervalTrigger() {
         return window.setInterval(function () {
             background.src = "wall.png";
