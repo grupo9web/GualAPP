@@ -9,64 +9,129 @@ var lienzoScore = menuCanvas.getContext("2d");
 var tCanvas = document.getElementById("topCanvas");
 var ctx = tCanvas.getContext("2d");
 
-canvas1height = 400;
 
-//MENU:
 
+var anchoBotCanvas = bCanvas.width;
+var altoBotCanvas = bCanvas.height;
+
+var altoTopCanvasight = tCanvas.height;
+
+
+//Variables para la carga de imágenes
+var background = new Image();
+background.src = "wall.png";
+
+
+var topBackgorund = new Image();
+topBackgorund.src = "topwall.png"
+
+var plataformasImg = new Image();
+plataformasImg.src = "plataforma.png"
+
+var plataformasImg2 = new Image();
+plataformasImg2.src = "plataforma2.png"
+
+var dragonSprite = new Image();
+dragonSprite.src = "pu1.png";
+
+var jon = new Image();
+jon.src = 'Jon.png';
+
+var jonLeft = new Image();
+jonLeft.src = 'JonI.png';
+
+var jonRight = new Image();
+jonRight.src = 'JonD.png';
+
+var jonDragon = new Image();
+jonDragon.src = "drogonn.png";
+
+//Sprites de enemigo + pierda
+espanha = document.getElementById('sprite');
+espania = document.getElementById('walker');
+
+
+
+
+//Variables para el desarrollo del juego
+var platformCount = 8;
+var gravity = 0.2;
+var vx = 0.5;
+var vy = -9;
+var position = 0;
+var plataformas = [];
+var powerup;
+var score = 0;
+
+var isPowerUp = false;
+var androidDerecha = false;
+var androidIzquierda = false;
+var firstRun = true;
+var userName;
+var specialSprites = false;
+var heEntrado = false;
+var scoreUploaded = false;
+var newLevel = 0;
+var mejoresPuntuaciones = new Array();
+var android = false;
+
+
+
+
+//Variables para la gestión del menu
 var menu = document.getElementById("menu");
 var cmenu = menu.getContext("2d");
-
-
 
 var container = document.getElementById("container");
 container.style.display = "none";
 
-var playing;
 var mouseX;
 var mouseY;
 
+// Botones que serán empleados para avanzar entre estados.
+var botonJugar = new Button(110, 381, 371, 447);
+var botonScore = new Button(110, 381, 475, 550);
+var botonOpciones = new Button(110, 381, 575, 650);
+var botonCreditos = new Button(110, 381, 675, 750);
+var botonIdioma = new Button(110, 381, 351, 413)
+var botonCerrar = new Button(381, 500, 830, 886);
+var boton1 = new Button(284, 500, 147, 207);
+
 /*
-* LanguajeSelected = 0  -->Español
-*
-* LanguajeSelected = 1  -->Ingles
-* */
+ * LanguajeSelected = 0  -->Español
+ *
+ * LanguajeSelected = 1  -->Ingles
+ * */
 
 var languajeSelected = 0;
 
 
+
 //Estados
 /*
-* Estado menu = 0;
-* Estado Jugando = 1;
-* Estado Scores = 2;
-* Estado Opciones = 3;
-* Estado Creditos = 4;
-*
-* */
+ * Estado menu = 0;
+ * Estado Jugando = 1;
+ * Estado Scores = 2;
+ * Estado Opciones = 3;
+ * Estado Creditos = 4;
+ *
+ * */
 var curretStateId = 0;
 
 
 const gameStates = {
     currentState: undefined,
     startGame() {
-        playing = true;
-
-
-        player.x = plataformas[plataformas.length - 1].x + 20;
-        player.y = plataformas[plataformas.length - 1].y - player.alto + 10;
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////    
+   
         var audio = document.getElementById('cancion_fondo');
         audio.src = 'musica/Musica Principal 2.mp3';
         audio.load();
-        audio.play();
+        //audio.play();
         
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         container.style.display = "initial";
         menu.style.display = "none"
         curretStateId = 1;
-        score = 0;
-
+        if (!firstRun) reset(); firstRun = false;
     },
     game() {
         //El juego en si
@@ -79,10 +144,10 @@ const gameStates = {
         var audio = document.getElementById('cancion_fondo');
         audio.src = 'musica/Dueto Rains of Castamere.mp3';
         audio.load();
-        audio.play();
+        //audio.play();
         document.addEventListener('click', mouseCliked, false);
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
     },
     menuSetup() {
         drawMenu();
@@ -91,32 +156,19 @@ const gameStates = {
         gameStates.currentState;
     },
     gameOver() {
-        playing = false;
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////// PUNTUACIONES //////////////////////////////////////////////////////
+
+        //Cuando se acabe el juego, se sube la puntuación a la caché
+        if (!scoreUploaded) {
+            scoreUploaded = true;
+            mejoresPuntuaciones.push(new puntuacionNombre(userName, score));
+
+            localStorage.setItem("arrayPuntuaciones", JSON.stringify(mejoresPuntuaciones));
+            mejoresPuntuaciones = JSON.parse(localStorage.getItem("arrayPuntuaciones"));
+
+            mejoresPuntuaciones.sort(sortNumber);
+        }
 
 
-
-        //localStorage.clear();
-
-
-        
-        mejoresPuntuaciones.push(new puntuacionNombre("Juan Pedro", score));
-
-        localStorage.setItem("arrayPuntuaciones", JSON.stringify(mejoresPuntuaciones));
-        mejoresPuntuaciones = JSON.parse(localStorage.getItem("arrayPuntuaciones"));
-
-        mejoresPuntuaciones.sort(sortNumber);
-        console.log(typeof mejoresPuntuaciones); //object
-        console.log(mejoresPuntuaciones); //[1, 2, 3]
-        
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        score = 0;
         container.style.display = "none";
         menu.style.display = "initial"
         curretStateId = 0;
@@ -160,8 +212,8 @@ window.onload = function () {
     gameStates.currentState;
 
 
-    localStorage.clear();
-    
+    //localStorage.clear();
+
     if (localStorage.getItem("arrayPuntuaciones") != null) {
         mejoresPuntuaciones = JSON.parse(localStorage.getItem("arrayPuntuaciones"));
         console.log("No deberia aparecer");
@@ -170,6 +222,8 @@ window.onload = function () {
     mejoresPuntuaciones.sort(sortNumber);
 
     console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
+
+    userName = prompt("Please enter your name", "Hulio");
 
 };
 
@@ -192,20 +246,18 @@ function drawScores() {
     img.src = "Assets/AA_Menu_Ranking.png"
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
-        lienzoScore.font = '30px WallApp';        
+        lienzoScore.font = '30px WallApp';
 
         for (var i = 0; i < mejoresPuntuaciones.length; i++) {
             if (i == 0) lienzoScore.fillStyle = '#ffcc00'
             else if (i == 1) lienzoScore.fillStyle = '#808080'
             else if (i == 2) lienzoScore.fillStyle = '#994d00'
             else lienzoScore.fillStyle = '#000000'
-            if(i<10) lienzoScore.fillText(mejoresPuntuaciones[i].nombre + ": " + mejoresPuntuaciones[i].puntuacion, width/2 - 150, i*45 + 416);
+            if (i < 10) lienzoScore.fillText(mejoresPuntuaciones[i].nombre + ": " + mejoresPuntuaciones[i].puntuacion, anchoBotCanvas / 2 - 150, i * 45 + 416);
         }
     };
 
 
-
-    console.log("El primer elemento es :" + mejoresPuntuaciones[0]);
 
 
 
@@ -226,15 +278,6 @@ function drawCredits() {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
     };
 }
-
-var botonJugar = new Button(110, 381, 371, 447);
-var botonScore = new Button(110, 381, 475, 550);
-var botonOpciones = new Button(110, 381, 575, 650);
-var botonCreditos = new Button(110, 381, 675, 750);
-
-var botonIdioma = new Button(110, 381, 351, 413)
-var botonCerrar = new Button(381, 500, 830, 886);
-
 
 
 function mouseCliked(e) {
@@ -285,71 +328,16 @@ Button.prototype.checkClicked = function () {
 };
 
 
-var width = 500;
-var height = 600;
-
-
-var background = new Image();
-background.src = "wall.png";
-
-
-
-var topBackgorund = new Image();
-topBackgorund.src = "topwall.png"
-
-var plataformasImg = new Image();
-plataformasImg.src = "plataforma.png"
-
-var plataformasImg2 = new Image();
-plataformasImg2.src = "plataforma2.png"
-
-var dragonSprite = new Image();
-dragonSprite.src = "pu1.png";
-
-
-var specialSprites = false;
-var heEntrado = false;
-
-
-
-
-var anchoCanvas = bCanvas.width;
-var altoCanvas = bCanvas.height;
-
-var platformCount = 8;
-
-var gravity = 0.2;
-
-var vx = 0.5;
-var vy = -9;
-
-var isPowerUp = false;
-
-var androidDerecha = false;
-var androidIzquierda = false;
-
-var score = 0;
 
 /////////////////////////////////////////////////////// VARIABLE MEJORES PUNTUACIONES ////////////////
 
 
-function puntuacionNombre (nombre, puntuacion){
+function puntuacionNombre(nombre, puntuacion) {
     this.nombre = nombre;
     this.puntuacion = puntuacion;
 }
-    
-var mejoresPuntuaciones = new Array();
 
 
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-var newLevel = true;
-
-var boton1 = new Button(284, 500, 147, 207)
-var roca = true;
 
 function Button(xL, xR, yT, yB) {
     this.xLeft = xL;
@@ -360,43 +348,34 @@ function Button(xL, xR, yT, yB) {
 
 
 
+var Player = function () {
+
+    this.x = anchoBotCanvas / 2 - 50;
+    this.y = altoBotCanvas - 150;
+
+    this.x_vel = 0;
+    this.y_vel = 0;
+
+    this.isDead = false;
+
+    this.ancho = 50;
+    this.alto = 63;
 
 
-var player = {
-    x: anchoCanvas / 2 - 50,
-    y: altoCanvas - 150,
-    ancho: 50,
-    alto: 63,
-    jumping: true,
-    saltado: true,
-    x_vel: 0,
-    y_vel: 0,
+    this.jumping = true;
+    this.saltado = true;
 
+    this.spriteState = 0;
 
-    spriteState: 0, //0 Normal, 1 Izquierda, 2 Derecha
+};
 
-    get midX() {
-        return this.x + this.ancho * 0.5
-    },
-    get midY() {
-        return this.y + this.alto * 0.5
-    },
-}
-
-var position = 0;
-
-
-
-
-var plataformas = [];
-
-
+var player = new Player();
 
 function Platform() {
     this.ancho = 100;
     this.alto = 30;
 
-    this.x = Math.random() * (width - this.ancho);
+    this.x = Math.random() * (anchoBotCanvas - this.ancho);
     this.y = position;
 
     this.vx = Math.round(Math.random()); //Velocidad positiva o negativa, se refleja como 0 o 1, en caso de ser 0 se moficiará
@@ -406,26 +385,33 @@ function Platform() {
     this.puntuado = false;
     this.saltado = false;
 
-    position += (height / platformCount);
+    position += (altoBotCanvas / platformCount);
 
 
     if (score > 2500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2, 2];
-        setDificultad();
+        if (newLevel == 3) {           
+            setDificultad();
+            newLevel++;
+        }
     } else if (score > 1500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2];
-        setDificultad();
-    } else if (score > 500) {
-        this.probabilidad = [0, 0, 0, 1, 2, 2];
-        setDificultad();
-    } else if (score > 100) {
-
-        this.probabilidad = [0, 0, 0, 1, 2];
-        if (newLevel) {
-            background.src = "wallpp.png";
+        if (newLevel == 2) {           
             setDificultad();
+            newLevel++;
         }
-        newLevel = false;
+    } else if (score > 250) {
+        this.probabilidad = [0, 0, 0, 1, 2, 2];
+        if (newLevel == 1) {           
+            setDificultad();
+            newLevel++;
+        }
+    } else if (score > 100) {
+        this.probabilidad = [0, 0, 0, 1, 2];
+        if (newLevel == 0) {           
+            setDificultad();
+            newLevel++;
+        }
     } else {
         this.probabilidad = [0];
     }
@@ -434,8 +420,6 @@ function Platform() {
 
 };
 
-
-var powerup;
 
 for (var i = 0; i < platformCount; i++) {
     plataformas.push(new Platform());
@@ -446,42 +430,7 @@ for (var i = 0; i < platformCount; i++) {
 player.x = plataformas[plataformas.length - 1].x + 20;
 player.y = plataformas[plataformas.length - 1].y - player.alto + 10;
 
-var Base = function () {
-    this.height = 5;
-    this.width = width;
 
-
-    this.x = 0;
-    this.y = height - this.height;
-};
-
-var base = new Base();
-
-var Agujero = function () { }
-
-var jon = new Image();
-jon.src = 'Jon.png';
-
-var jonLeft = new Image();
-jonLeft.src = 'JonI.png';
-
-var jonRight = new Image();
-jonRight.src = 'JonD.png';
-
-var jonDragon = new Image();
-jonDragon.src = "drogonn.png";
-
-
-
-var bCanvas = document.getElementById("lienzo");
-var lienzo = bCanvas.getContext("2d");
-var android = false;
-
-var auxX = 50;
-var auxY = 450;
-
-espanha = document.getElementById('sprite');
-espania = document.getElementById('walker');
 
 var enemy = function () {
 
@@ -498,6 +447,7 @@ var enemy = function () {
     this.attack = [];
 
     // Main method to control enemy IA
+
     this.drawEnemy = function () {
 
         // Move the character through the canvas
@@ -525,6 +475,7 @@ var enemy = function () {
         }
 
     }
+
 
     // Increase or decrease X pos as direction marks
     this.move = function () {
@@ -582,7 +533,7 @@ function arrow(positionX, positionY, vY) {
     this.draw = function () {
 
         // Draw the arrow in both canvas and set delay between them
-        if (this.posY < canvas1height && this.posYbelow <= height) {
+        if (this.posY < altoTopCanvasight && this.posYbelow <= altoBotCanvas) {
             // Top canvas
             this.fall();
             ctx.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posY, 21, 16);
@@ -591,7 +542,7 @@ function arrow(positionX, positionY, vY) {
             ctx.rect(this.posX, this.posY, this.projectileWidth, this.proejctileHeight);
             ctx.stroke();
 
-        } else if (this.posY > canvas1height && this.posYbelow <= height) {
+        } else if (this.posY > altoTopCanvasight && this.posYbelow <= altoBotCanvas) {
 
             if (!this.posCanvas) {
                 // Transition
@@ -620,19 +571,6 @@ function arrow(positionX, positionY, vY) {
 
 
     this.collision = function (player) {
-
-        /*console.log("PosX: " + this.posX + " PlayerX: " + player.x);
-        console.log("PosY: " + this.posYbelow + " PlayerY: " + player.y);
-        if (this.posX < player.x + player.width &&
-            this.posX + this.projectileWidth > player.x &&
-            this.posYbelow - this.projectileHeight < player.y + player.height &&
-            this.posYbelow > player.y){
-                console.log("Collision detected!");   
-                this.existence = false;
-            
-            }
-
-    }*/
         if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
             (this.posYbelow + this.projectileHeight > player.y) && (this.posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
             this.existence = false;
@@ -702,20 +640,20 @@ function pintaPlataformas() {
 
 
 
-function putasColisionesMeComenLosPutosCojones2() {
+function gestionColisiones() {
     for (var i = 0; i < plataformas.length; i++) {
-        var puta = plataformas[i];
-        if (player.y_vel > 0 && (player.x + 15 < puta.x + puta.ancho) && (player.x + player.ancho -
-            15 > puta.x) &&
-            (player.y + player.alto > puta.y) && (player.y + player.alto < puta.y + puta.alto)) {
-            if (!puta.saltado) player.y_vel = vy;
+        var auxPlat = plataformas[i];
+        if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
+                15 > auxPlat.x) &&
+            (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
+            if (!auxPlat.saltado) player.y_vel = vy;
 
-            if (puta.type == 2) {
+            if (auxPlat.type == 2) {
                 plataformas[i].saltado = true;
             }
 
-            if (!puta.puntuado) {
-                if(playing)  score += 10;
+            if (!auxPlat.puntuado) {
+                if (!player.isDead) score += 10;
                 plataformas[i].puntuado = true;
             }
 
@@ -724,10 +662,6 @@ function putasColisionesMeComenLosPutosCojones2() {
         player.saltado = true;
 
         //Colisiones con los power ups
-
-
-
-
         if (player.y_vel > 0 && powerup.x > player.x && (powerup.x + powerup.ancho) < (player.x + player.ancho) &&
             (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
         ) {
@@ -744,16 +678,13 @@ function putasColisionesMeComenLosPutosCojones2() {
             specialSprites = true;
             isPowerUp = true;
 
-            if(playing) score += 50;
-            //setDificultad();
+            if (!player.isDead) score += 50;
 
             //Intervalo para el PU
-
             if (powerup.type == 1) {
                 function intervalTrigger() {
                     return window.setInterval(function () {
                         gravity = 0.2;
-                        //specialSprites = false;
                         dragonSprite.src = "pu1.png";
 
                         window.clearInterval(id);
@@ -776,24 +707,41 @@ function putasColisionesMeComenLosPutosCojones2() {
 }
 
 
-function reset () {
+function reset() {
+
+    position = 0;
     score = 0;
+    gravity = 0.2;
+    player.isDead = false;
+
+    player = new Player();
+    
+    enem = new enemy();
+    plataformas = [];
+    for (var i = 0; i < platformCount; i++) {
+        plataformas.push(new Platform());
+    }
+
+    //Para que el jugador salga en una plataforma determinada
+    player.x = plataformas[7].x + plataformas[7].ancho/2;
+    player.y = plataformas[7].y - player.alto - 10;
 
 }
 
 
 function gameOver() {
-    plataformas.forEach(function(aux, i){
-        aux.y -= 12;
-    });
 
-    if(player.y > height / 2){
-        player.y -= 8;
-        player.y_vel = 0;
-    }else if(player.y + player.alto > height){
-        gameStates.currentState = gameStates.gameOver();
-        gameStates.currentState;
-    }
+    player.x = -player.ancho - 10;
+    player.y = 0;
+    player.y_vel = 0;
+    gravity = 0;
+    
+
+    player.isDead = "fifty";
+
+
+    gameStates.currentState = gameStates.gameOver();
+    gameStates.currentState;
 
 }
 
@@ -826,48 +774,7 @@ function gestionPowerUp() {
 }
 
 function setDificultad() {
-    /*if (score >= 500) {
-        background.src = "wallpp.png";
-
-        vx -= 0.05;
-        vy += 1;
-
-        function intervalTrigger() {
-            return window.setInterval(function () {
-                background.src = "wall.png";
-                window.clearInterval(id);
-            }, 1000);
-        };
-        var id = intervalTrigger();
-    }
-    if (score >= 1000) {
-
-        vx -= 0.025;
-        vy += 1;
-
-        function intervalTrigger() {
-            background.src = "wallpp.png";
-            return window.setInterval(function () {
-                background.src = "wall.png";
-                window.clearInterval(id2);
-            }, 1000);
-        };
-        var id2 = intervalTrigger();
-    }
-    if (score >= 2000) {
-
-        vx -= 0.025;
-        vy += 1;
-
-
-        function intervalTrigger3() {
-            background.src = "wallpp.png";
-            return window.setInterval(function () {
-                background.src = "wall.png";
-            }, 1000);
-        };
-        var id3 = intervalTrigger3();
-    }*/
+    background.src = "wallpp.png";
     function intervalTrigger() {
         return window.setInterval(function () {
             background.src = "wall.png";
@@ -917,7 +824,6 @@ controller = {
 
 loop = function () {
 
-    var xFactor = 0.9;
 
 
     //Gestión de la velocidad y de los sprites:
@@ -938,7 +844,7 @@ loop = function () {
 
 
     //Gestión del movimiento del personaje:
-    if (player.y >= (height / 2) - (player.alto / 2)) {
+    if (player.y >= (altoBotCanvas / 2) - (player.alto / 2)) {
         player.y += player.y_vel;
         player.y_vel += gravity;
     } else {
@@ -948,14 +854,13 @@ loop = function () {
                 p.y -= player.y_vel;
             }
 
-            if (p.y > height) {
+            if (p.y > altoBotCanvas) {
                 plataformas[i] = new Platform();
-                plataformas[i].y = p.y - height;
+                plataformas[i].y = p.y - altoBotCanvas;
             }
 
         });
 
-        base.y -= player.y_vel;
         player.y_vel += gravity;
 
         if (player.y_vel >= 0) {
@@ -966,7 +871,7 @@ loop = function () {
 
     plataformas.forEach(function (p, i) {
         if (p.type == 1) {
-            if (p.x < 0 || p.x + p.ancho > width) {
+            if (p.x < 0 || p.x + p.ancho > anchoBotCanvas) {
                 p.vx *= -1;
             }
             p.x += p.vx;
@@ -991,27 +896,23 @@ loop = function () {
         player.x = -32;
     }
 
-    if (player.y > 580) {
-        gameOver()
-        /*
-        if(playing  == true) {
-            gameStates.currentState = gameStates.gameOver();
-            gameStates.currentState;
-        }
-        player.x = plataformas[plataformas.length - 1].x + 20;
-        player.y = plataformas[plataformas.length - 1].y - player.alto + 10;*/
+    if (player.y > 580 && player.isDead != "fifty") {
+        player.isDead = "true";
+        window.alert("ei" + player.isDead);
     }
+
+    if (player.isDead == "true") gameOver();
 
     //score++;
 
 
 
     lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
 
 
     gestionPowerUp();
-    putasColisionesMeComenLosPutosCojones2()
+    gestionColisiones()
     pintaPersonaje();
     enem.drawEnemy();
     pintaPlataformas();
