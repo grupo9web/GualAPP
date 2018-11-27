@@ -83,6 +83,8 @@ const gameStates = {
         curretStateId = 0;
         gameStates.currentState = gameStates.menu();
         gameStates.currentState;
+
+
     },
     gameOver() {
 
