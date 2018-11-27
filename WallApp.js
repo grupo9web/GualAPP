@@ -16,7 +16,7 @@ canvas1height = 400;
 var menu = document.getElementById("menu");
 var cmenu = menu.getContext("2d");
 
-
+var userName;
 
 var container = document.getElementById("container");
 container.style.display = "none";
@@ -97,7 +97,7 @@ const gameStates = {
 
 
         
-        mejoresPuntuaciones.push(new puntuacionNombre("Juan Pedro", score));
+        mejoresPuntuaciones.push(new puntuacionNombre(userName, score));
 
         localStorage.setItem("arrayPuntuaciones", JSON.stringify(mejoresPuntuaciones));
         mejoresPuntuaciones = JSON.parse(localStorage.getItem("arrayPuntuaciones"));
@@ -120,8 +120,9 @@ const gameStates = {
         gameStates.currentState;
     },
     showScore() {
-        drawScores();
         curretStateId = 2;
+        drawScores();
+        
     },
     closeScore() {
         drawMenu()
@@ -150,6 +151,11 @@ const gameStates = {
 
 
 window.onload = function () {
+
+
+    userName = prompt("Please enter your name", "Hulio");
+
+
     //getMobileOperatingSystem();
     gameStates.currentState = gameStates.menuSetup()
     gameStates.currentState;
