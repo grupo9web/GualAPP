@@ -46,6 +46,16 @@ jonRight.src = 'JonD.png';
 var jonDragon = new Image();
 jonDragon.src = "drogonn.png";
 
+var powerup2 = new Image();
+powerup2.src = "purplePowerup.png";
+
+var powerup2Sprite = new Image();
+powerup2Sprite.src = "pu2Sprite.png";
+var powerup2SpriteI = new Image();
+powerup2SpriteI.src = "pu2SpriteI.png";
+var powerup2SpriteD = new Image();
+powerup2SpriteD.src = "pu2SpriteD.png";
+
 //Sprites de enemigo + pierda
 espanha = document.getElementById('sprite');
 espania = document.getElementById('walker');
@@ -61,9 +71,13 @@ var vy = -9;
 var position = 0;
 var plataformas = [];
 var powerup;
+var powerupAlive = false;
+var puType = Math.round(Math.random());
 var score = 0;
+var jumpCounter = 5;
+var doubleJump = false;
 
-var isPowerUp = false;
+var isPowerUp = false; //Para que no se cambien los sprites cuando estemos con un poweUp activo.
 var androidDerecha = false;
 var androidIzquierda = false;
 var firstRun = true;
@@ -75,6 +89,7 @@ var newLevel = 0;
 var mejoresPuntuaciones = new Array();
 var android = false;
 
+var posYbelow;
 
 
 
@@ -122,16 +137,17 @@ var curretStateId = 0;
 const gameStates = {
     currentState: undefined,
     startGame() {
-   
+
         var audio = document.getElementById('cancion_fondo');
         audio.src = 'musica/Musica Principal 2.mp3';
         audio.load();
         //audio.play();
-        
+
         container.style.display = "initial";
         menu.style.display = "none"
         curretStateId = 1;
-        if (!firstRun) reset(); firstRun = false;
+        if (!firstRun) reset();
+        firstRun = false;
     },
     game() {
         //El juego en si
@@ -147,7 +163,7 @@ const gameStates = {
         //audio.play();
         document.addEventListener('click', mouseCliked, false);
 
-       
+
     },
     menuSetup() {
         drawMenu();
@@ -390,25 +406,25 @@ function Platform() {
 
     if (score > 2500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2, 2];
-        if (newLevel == 3) {           
+        if (newLevel == 3) {
             setDificultad();
             newLevel++;
         }
     } else if (score > 1500) {
         this.probabilidad = [0, 0, 1, 1, 2, 2];
-        if (newLevel == 2) {           
+        if (newLevel == 2) {
             setDificultad();
             newLevel++;
         }
     } else if (score > 250) {
         this.probabilidad = [0, 0, 0, 1, 2, 2];
-        if (newLevel == 1) {           
+        if (newLevel == 1) {
             setDificultad();
             newLevel++;
         }
     } else if (score > 100) {
         this.probabilidad = [0, 0, 0, 1, 2];
-        if (newLevel == 0) {           
+        if (newLevel == 0) {
             setDificultad();
             newLevel++;
         }
@@ -512,7 +528,7 @@ function arrow(positionX, positionY, vY) {
     // Public
     this.posX = positionX;
     this.posY = positionY;
-    this.posYbelow = 0;
+    posYbelow = 0;
     this.vy = vY;
 
     this.projectileWidth = 21;
@@ -524,7 +540,7 @@ function arrow(positionX, positionY, vY) {
 
     this.fall = function () {
         if (this.posCanvas) {
-            this.posYbelow += this.vy;
+            posYbelow += this.vy;
         } else if (!this.posCanvas) {
             this.posY += this.vy;
         }
@@ -533,7 +549,7 @@ function arrow(positionX, positionY, vY) {
     this.draw = function () {
 
         // Draw the arrow in both canvas and set delay between them
-        if (this.posY < altoTopCanvasight && this.posYbelow <= altoBotCanvas) {
+        if (this.posY < altoTopCanvasight && posYbelow <= altoBotCanvas) {
             // Top canvas
             this.fall();
             ctx.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posY, 21, 16);
@@ -542,7 +558,7 @@ function arrow(positionX, positionY, vY) {
             ctx.rect(this.posX, this.posY, this.projectileWidth, this.proejctileHeight);
             ctx.stroke();
 
-        } else if (this.posY > altoTopCanvasight && this.posYbelow <= altoBotCanvas) {
+        } else if (this.posY > altoTopCanvasight && posYbelow <= altoBotCanvas) {
 
             if (!this.posCanvas) {
                 // Transition
@@ -550,11 +566,11 @@ function arrow(positionX, positionY, vY) {
             } else {
                 // Bottom canvas
                 this.fall();
-                lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posYbelow, 21, 16);
+                lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, posYbelow, 21, 16);
                 //  pintaPersonaje(true);
 
                 // Collider
-                lienzo.rect(this.posX, this.posYbelow, this.projectileWidth, this.proejctileHeight);
+                lienzo.rect(this.posX, posYbelow, this.projectileWidth, this.proejctileHeight);
                 lienzo.stroke();
             }
 
@@ -572,7 +588,7 @@ function arrow(positionX, positionY, vY) {
 
     this.collision = function (player) {
         if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
-            (this.posYbelow + this.projectileHeight > player.y) && (this.posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
+            (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
             this.existence = false;
             gameStates.currentState = gameStates.gameOver();
             gameStates.currentState;
@@ -622,8 +638,11 @@ function pintaPersonaje(boolAux) {
     if (player.spriteState == 1) lienzo.drawImage(jonLeft, player.x, player.y);
     if (player.spriteState == 2) lienzo.drawImage(jonRight, player.x, player.y);
     if (player.spriteState == 3) lienzo.drawImage(jonDragon, player.x - 150, player.y - 62);
+    if (player.spriteState == 4) lienzo.drawImage(powerup2Sprite, player.x, player.y);
 
-    lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
+    if (powerup.type == 0) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
+    else if (powerup.type == 1) lienzo.drawImage(powerup2, powerup.x, powerup.y);
+
 }
 
 function pintaPlataformas() {
@@ -646,7 +665,12 @@ function gestionColisiones() {
         if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
                 15 > auxPlat.x) &&
             (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
-            if (!auxPlat.saltado) player.y_vel = vy;
+            if (!auxPlat.saltado) {
+                if (doubleJump) {
+                    player.y_vel = 2 * vy;
+                    jumpCounter--;
+                } else player.y_vel = vy;
+            }
 
             if (auxPlat.type == 2) {
                 plataformas[i].saltado = true;
@@ -655,6 +679,14 @@ function gestionColisiones() {
             if (!auxPlat.puntuado) {
                 if (!player.isDead) score += 10;
                 plataformas[i].puntuado = true;
+            }
+
+            if (jumpCounter == 0) {
+                doubleJump = false;
+                jumpCounter = 5;
+                player.spriteState = 0;
+                isPowerUp = false;
+                specialSprites = false;
             }
 
         }
@@ -666,22 +698,21 @@ function gestionColisiones() {
             (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
         ) {
 
+            if (powerup.type == 0) {
+                player.y_vel = -20;
+                gravity = 0.1;
 
-            player.y_vel = -20;
-            gravity = 0.1;
-
-            dragonSprite.src = "pu2.png";
+                dragonSprite.src = "pu2.png";
 
 
-            player.spriteState = 3;
-            powerup.render = false;
-            specialSprites = true;
-            isPowerUp = true;
+                player.spriteState = 3;
 
-            if (!player.isDead) score += 50;
+                specialSprites = true;
+                isPowerUp = true;
 
-            //Intervalo para el PU
-            if (powerup.type == 1) {
+                if (!player.isDead) score += 50;
+
+                //Intervalo para el PU
                 function intervalTrigger() {
                     return window.setInterval(function () {
                         gravity = 0.2;
@@ -701,6 +732,28 @@ function gestionColisiones() {
                 };
                 var id = intervalTrigger();
                 var id2 = spriteChanger();
+            } else if (powerup.type == 1) {
+
+
+                doubleJump = true;
+
+                player.spriteState = 4;
+
+                specialSprites = true;
+                isPowerUp = true;
+
+                if (!player.isDead) score += 50;
+
+                //Intervalo para el PU
+                function intervalTrigger() {
+                    return window.setInterval(function () {
+                        gravity = 0.2;
+                        powerup2.src = "purplePowerup.png";
+
+                        window.clearInterval(id);
+                    }, 800);
+                };
+                var id = intervalTrigger();
             }
         }
     }
@@ -715,7 +768,7 @@ function reset() {
     player.isDead = false;
 
     player = new Player();
-    
+
     enem = new enemy();
     plataformas = [];
     for (var i = 0; i < platformCount; i++) {
@@ -723,7 +776,7 @@ function reset() {
     }
 
     //Para que el jugador salga en una plataforma determinada
-    player.x = plataformas[7].x + plataformas[7].ancho/2;
+    player.x = plataformas[7].x + plataformas[7].ancho / 2;
     player.y = plataformas[7].y - player.alto - 10;
 
 }
@@ -735,7 +788,7 @@ function gameOver() {
     player.y = 0;
     player.y_vel = 0;
     gravity = 0;
-    
+
 
     player.isDead = "fifty";
 
@@ -754,17 +807,18 @@ function gestionPowerUp() {
             ancho: 25,
             alto: 25,
             render: true,
-            type: 1,
+            type: puType,
 
             x: plataformas[2].x + plataformas[2].ancho / 2 - 25 / 2,
             y: plataformas[2].y - plataformas[2].alto,
         }
+        powerupAlive = true;
     } else {
         powerup = {
             ancho: 25,
             alto: 25,
             render: false,
-            type: 1,
+            type: 0,
 
             x: -25,
             y: -25,
@@ -775,6 +829,7 @@ function gestionPowerUp() {
 
 function setDificultad() {
     background.src = "wallpp.png";
+
     function intervalTrigger() {
         return window.setInterval(function () {
             background.src = "wall.png";
@@ -824,7 +879,7 @@ controller = {
 
 loop = function () {
 
-
+    console.log(jumpCounter);
 
     //Gestión de la velocidad y de los sprites:
 
@@ -867,6 +922,7 @@ loop = function () {
             player.y += player.y_vel;
             player.y_vel += gravity;
         }
+        //powerupAlive = false;
     }
 
     plataformas.forEach(function (p, i) {
