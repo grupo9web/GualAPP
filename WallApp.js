@@ -684,8 +684,7 @@ function gestionColisiones() {
             if (jumpCounter == 0) {
                 doubleJump = false;
                 jumpCounter = 5;
-                player.spriteState = 0;
-                isPowerUp = false;
+                player.spriteState = 0;                
                 specialSprites = false;
             }
 
@@ -715,6 +714,7 @@ function gestionColisiones() {
                 //Intervalo para el PU
                 function intervalTrigger() {
                     return window.setInterval(function () {
+                        puType = Math.round(Math.random());
                         gravity = 0.2;
                         dragonSprite.src = "pu1.png";
 
@@ -733,10 +733,11 @@ function gestionColisiones() {
                 var id = intervalTrigger();
                 var id2 = spriteChanger();
 
-                puType = Math.round(Math.random());
+                
 
-            } else if (powerup.type == 1) {
+            } else if (powerup.type == 1 && !isPowerUp) {
 
+                powerup2.src = "pu2.png";
 
                 doubleJump = true;
 
@@ -750,15 +751,16 @@ function gestionColisiones() {
                 //Intervalo para el PU
                 function intervalTrigger() {
                     return window.setInterval(function () {
-                        gravity = 0.2;
+                        puType = Math.round(Math.random());
                         powerup2.src = "purplePowerup.png";
+                        isPowerUp = false;
 
                         window.clearInterval(id);
                     }, 800);
                 };
                 var id = intervalTrigger();
 
-                puType = Math.round(Math.random());
+                
             }
         }
     }
@@ -823,7 +825,7 @@ function gestionPowerUp() {
             ancho: 25,
             alto: 25,
             render: false,
-            type: 0,
+            type: -1,
 
             x: -25,
             y: -25,
