@@ -732,6 +732,9 @@ function gestionColisiones() {
                 };
                 var id = intervalTrigger();
                 var id2 = spriteChanger();
+
+                puType = Math.round(Math.random());
+
             } else if (powerup.type == 1) {
 
 
@@ -754,6 +757,8 @@ function gestionColisiones() {
                     }, 800);
                 };
                 var id = intervalTrigger();
+
+                puType = Math.round(Math.random());
             }
         }
     }
@@ -879,7 +884,7 @@ controller = {
 
 loop = function () {
 
-    console.log(jumpCounter);
+    console.log(puType);
 
     //Gestión de la velocidad y de los sprites:
 
