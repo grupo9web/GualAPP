@@ -74,7 +74,7 @@ var powerup;
 var powerupAlive = false;
 var puType = Math.round(Math.random());
 var score = 0;
-var jumpCounter = 5;
+var jumpCounter = 3;
 var doubleJump = false;
 
 var isPowerUp = false; //Para que no se cambien los sprites cuando estemos con un poweUp activo.
@@ -234,10 +234,10 @@ window.onload = function () {
         userName = prompt("Please enter your name", "Hulio");
         if (userName.length <= 10)
             nombreCorrecto = true;
-            
+
         else
             window.alert("La longitud del nombre debe ser menor a 10 caracteres incluyendo espacios");
-        
+
     }
 };
 
@@ -292,8 +292,7 @@ function drawOpciones() {
         img.src = "Assets/opcionesEnglishDisabled.png"
     } else if (languajeSelected === 0 && mute) {
         img.src = "Assets/opcionesEspDesactivado.png"
-    }
-    else if (languajeSelected === 1 && !mute) {
+    } else if (languajeSelected === 1 && !mute) {
         img.src = "Assets/opcionesEnglishEnabled.png"
     } else if (languajeSelected === 0 && !mute) {
         img.src = "Assets/opcionesEspActivado.png"
@@ -354,7 +353,7 @@ function drawGameOver() {
             lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 110 + userName.length, i * 45 + 120);
             */
         lienzoScore.font = '40px WallApp';
-        lienzoScore.fillText(userName + ": " + score , anchoBotCanvas / 2 - 200, i * 45 + 120);
+        lienzoScore.fillText(userName + ": " + score, anchoBotCanvas / 2 - 200, i * 45 + 120);
 
 
 
@@ -434,14 +433,10 @@ function mouseCliked(e) {
             window.alert("HAS MUTEADO EL JUEGO");
 
         }
-        
+
         drawOpciones();
-        
+
     }
-
-
-
-
 
 
 }
@@ -756,6 +751,8 @@ function pintaPersonaje(boolAux) {
     if (player.spriteState == 2) lienzo.drawImage(jonRight, player.x, player.y);
     if (player.spriteState == 3) lienzo.drawImage(jonDragon, player.x - 150, player.y - 62);
     if (player.spriteState == 4) lienzo.drawImage(powerup2Sprite, player.x, player.y);
+    if (player.spriteState == 4 && controller.left) lienzo.drawImage(powerup2SpriteI, player.x, player.y);
+    if (player.spriteState == 4 && controller.right) lienzo.drawImage(powerup2SpriteD, player.x, player.y);
 
     if (powerup.type == 0) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
     else if (powerup.type == 1) lienzo.drawImage(powerup2, powerup.x, powerup.y);
@@ -780,7 +777,7 @@ function gestionColisiones() {
     for (var i = 0; i < plataformas.length; i++) {
         var auxPlat = plataformas[i];
         if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
-            15 > auxPlat.x) &&
+                15 > auxPlat.x) &&
             (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
             if (!auxPlat.saltado) {
                 if (doubleJump) {
@@ -794,15 +791,18 @@ function gestionColisiones() {
             }
 
             if (!auxPlat.puntuado) {
-                if (!player.isDead) score += 10;
+                if (!player.isDead) {
+                    score += 10;
+                }
                 plataformas[i].puntuado = true;
             }
 
             if (jumpCounter == 0) {
                 doubleJump = false;
-                jumpCounter = 5;
+                jumpCounter = 3;
                 player.spriteState = 0;
                 specialSprites = false;
+                isPowerUp = false;
             }
 
         }
@@ -814,7 +814,7 @@ function gestionColisiones() {
             (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
         ) {
 
-            if (powerup.type == 0) {
+            if (powerup.type == 0 && !isPowerUp) {
                 player.y_vel = -20;
                 gravity = 0.1;
 
@@ -870,7 +870,6 @@ function gestionColisiones() {
                     return window.setInterval(function () {
                         puType = Math.round(Math.random());
                         powerup2.src = "purplePowerup.png";
-                        isPowerUp = false;
 
                         window.clearInterval(id);
                     }, 800);
