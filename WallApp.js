@@ -110,7 +110,7 @@ var mouseY;
  * */
 
 var languajeSelected = 0;
-var mute = false;
+var mute = true;
 
 
 
