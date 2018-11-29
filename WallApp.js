@@ -103,15 +103,6 @@ container.style.display = "none";
 var mouseX;
 var mouseY;
 
-// Botones que serán empleados para avanzar entre estados.
-var botonJugar = new Button(110, 381, 371, 447);
-var botonScore = new Button(110, 381, 475, 550);
-var botonOpciones = new Button(110, 381, 575, 650);
-var botonCreditos = new Button(110, 381, 675, 750);
-var botonIdioma = new Button(110, 381, 351, 413)
-var botonCerrar = new Button(381, 500, 830, 886);
-var boton1 = new Button(284, 500, 147, 207);
-
 /*
  * LanguajeSelected = 0  -->Español
  *
@@ -119,6 +110,7 @@ var boton1 = new Button(284, 500, 147, 207);
  * */
 
 var languajeSelected = 0;
+var mute = false;
 
 
 
@@ -129,6 +121,7 @@ var languajeSelected = 0;
  * Estado Scores = 2;
  * Estado Opciones = 3;
  * Estado Creditos = 4;
+ * Estado GameOver = 5;
  *
  * */
 var curretStateId = 0;
@@ -187,36 +180,26 @@ const gameStates = {
 
         container.style.display = "none";
         menu.style.display = "initial"
-        curretStateId = 0;
 
-        gameStates.currentState = gameStates.menuSetup();
+        gameStates.currentState = gameStates.showGameOver();
         gameStates.currentState;
     },
     showScore() {
         drawScores();
         curretStateId = 2;
     },
-    closeScore() {
-        drawMenu()
-        curretStateId = 0;
-    },
     showOptions() {
         drawOpciones()
         curretStateId = 3;
-    },
-    closeOptions() {
-        drawMenu();
-        curretStateId = 0;
-
     },
     showCredits() {
         drawCredits();
         curretStateId = 4;
     },
-    closeCredits() {
-        drawMenu();
-        curretStateId = 0;
-    }
+    showGameOver() {
+        drawGameOver();
+        curretStateId = 5;
+    },
 };
 
 
@@ -237,7 +220,7 @@ window.onload = function () {
 
     mejoresPuntuaciones.sort(sortNumber);
 
-    console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
+    //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
 
     userName = prompt("Please enter your name", "Hulio");
 
@@ -259,7 +242,15 @@ function drawMenu() {
 
 function drawScores() {
     var img = new Image();
-    img.src = "Assets/AA_Menu_Ranking.png"
+
+    var img = new Image();
+    if (languajeSelected === 1) {
+        img.src = "Assets/AA_Menu_Ranking.png"
+    } else if (languajeSelected === 0) {
+        img.src = "Assets/AA_Menu_Ranking.png"
+    }
+
+
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
         lienzoScore.font = '30px WallApp';
@@ -281,7 +272,19 @@ function drawScores() {
 
 function drawOpciones() {
     var img = new Image();
-    img.src = "Assets/AA_Menu_Opciones.png"
+
+    if (languajeSelected === 1 && mute ) {
+        img.src = "Assets/opcionesEnglishDisabled.png"
+    } else if (languajeSelected === 0 && mute) {
+        img.src = "Assets/opcionesEspDesactivado.png"
+    }
+     else if (languajeSelected === 1 && !mute ) {
+        img.src = "Assets/opcionesEnglishEnabled.png"
+    } else if (languajeSelected === 0 && !mute) {
+        img.src = "Assets/opcionesEspActivado.png"
+    }
+
+
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
     };
@@ -289,11 +292,47 @@ function drawOpciones() {
 
 function drawCredits() {
     var img = new Image();
-    img.src = "Assets/AA_Menu_Creditos.png"
+
+    if (languajeSelected === 1) {
+        img.src = "Assets/AA_Creditos_eng.png"
+    } else if (languajeSelected === 0) {
+        img.src = "Assets/AA_Creditos_esp.png"
+    }
+
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
     };
 }
+
+
+function drawGameOver() {
+    var img = new Image();
+
+    if (languajeSelected === 1) {
+        img.src = "Assets/AA_Game_Over_Eng.png"
+    } else if (languajeSelected === 0) {
+        img.src = "Assets//AA_Game_Over_Esp.png"
+    }
+
+    img.onload = function () {
+        cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
+    };
+}
+
+// Botones que serán empleados para avanzar entre estados.
+var botonJugar = new Button(110, 381, 371, 447);
+var botonScore = new Button(110, 381, 475, 550);
+var botonOpciones = new Button(110, 381, 575, 650);
+var botonCreditos = new Button(110, 381, 675, 750);
+var botonIdioma = new Button(110, 381, 437, 507)
+var botonMute = new Button(110, 381, 671, 741)
+
+var botonReplay = new Button(110,381,615, 674);
+var botonBackMenu = new Button(110,381,706, 763);
+var botonCerrar = new Button(22,168,15, 60);
+
+var boton1 = new Button(284, 500, 147, 207);
+
 
 
 function mouseCliked(e) {
@@ -316,14 +355,39 @@ function mouseCliked(e) {
         gameStates.currentState = gameStates.showCredits();
         gameStates.currentState;
     }
-    if (botonCerrar.checkClicked() && curretStateId > 1) {
+    if (botonCerrar.checkClicked() && (curretStateId > 1 || curretStateId < 5))  {
         gameStates.currentState = gameStates.menuSetup();
         gameStates.currentState;
     }
+    if (botonBackMenu.checkClicked() && curretStateId === 5)  {
+        gameStates.currentState = gameStates.menuSetup();
+        gameStates.currentState;
+    }
+    if (botonReplay.checkClicked() && curretStateId === 5)  {
+        gameStates.currentState = gameStates.startGame();
+        gameStates.currentState;
+    }
     if (botonIdioma.checkClicked() && curretStateId === 3) {
-        languajeSelected = 1;
+        if(languajeSelected == 0){
+            languajeSelected = 1;
+        }else if(languajeSelected == 1){
+            languajeSelected = 0;
+        }
+        drawOpciones();
         console.log("SE HA CAMBIADO IDIOMA")
     }
+    if (botonMute.checkClicked() && curretStateId === 3) {
+        if(mute){
+            mute = false;
+        }else{
+            mute = true;
+        }
+        drawOpciones();
+        console.log("SE HA CAMBIADO SONIDO")
+    }
+
+
+
 
 
 
@@ -886,7 +950,7 @@ controller = {
 
 loop = function () {
 
-    console.log(puType);
+   // console.log(puType);
 
     //Gestión de la velocidad y de los sprites:
 
