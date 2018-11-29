@@ -114,6 +114,10 @@ var mute = false;
 
 
 
+
+var audio = document.getElementById('cancion_fondo');
+
+
 //Estados
 /*
  * Estado menu = 0;
@@ -131,10 +135,12 @@ const gameStates = {
     currentState: undefined,
     startGame() {
 
-        var audio = document.getElementById('cancion_fondo');
-        audio.src = 'musica/Musica Principal 2.mp3';
-        audio.load();
-        //audio.play();
+        if (!mute) {
+            audio.src = 'musica/Musica Principal 2.mp3';
+            audio.load();
+            audio.volume = 0.1;
+            audio.play();
+        }
 
         container.style.display = "initial";
         menu.style.display = "none"
@@ -150,11 +156,13 @@ const gameStates = {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////  
 
-        var audio = document.getElementById('cancion_fondo');
-        audio.src = 'musica/Dueto Rains of Castamere.mp3';
-        audio.load();
-        //audio.play();
-        document.addEventListener('click', mouseCliked, false);
+        if (!mute) {
+            audio.src = 'musica/Dueto Rains of Castamere.mp3';
+            audio.load();
+            audio.play();
+            audio.volume = 0.1;
+            document.addEventListener('click', mouseCliked, false);
+        }
 
 
     },
@@ -221,9 +229,16 @@ window.onload = function () {
     mejoresPuntuaciones.sort(sortNumber);
 
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
-
-    userName = prompt("Please enter your name", "Hulio");
-
+    var nombreCorrecto = false;
+    while (!nombreCorrecto) {
+        userName = prompt("Please enter your name", "Hulio");
+        if (userName.length <= 10)
+            nombreCorrecto = true;
+            
+        else
+            window.alert("La longitud del nombre debe ser menor a 10 caracteres incluyendo espacios");
+        
+    }
 };
 
 
@@ -273,12 +288,12 @@ function drawScores() {
 function drawOpciones() {
     var img = new Image();
 
-    if (languajeSelected === 1 && mute ) {
+    if (languajeSelected === 1 && mute) {
         img.src = "Assets/opcionesEnglishDisabled.png"
     } else if (languajeSelected === 0 && mute) {
         img.src = "Assets/opcionesEspDesactivado.png"
     }
-     else if (languajeSelected === 1 && !mute ) {
+    else if (languajeSelected === 1 && !mute) {
         img.src = "Assets/opcionesEnglishEnabled.png"
     } else if (languajeSelected === 0 && !mute) {
         img.src = "Assets/opcionesEspActivado.png"
@@ -316,6 +331,33 @@ function drawGameOver() {
 
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
+
+        ///////////////////////////////////////////////////////////// PINTAR LA PUNTACION DE LA PARTIDA //////////////////////////////////////////
+
+        //lienzoScore.fillText(mejoresPuntuaciones[i].nombre + ": " + mejoresPuntuaciones[i].puntuacion, anchoBotCanvas / 2 - 150, i * 45 + 416);
+        /*
+        lienzoScore.font = '40px WallApp';
+        lienzoScore.fillText(userName + ": ", anchoBotCanvas / 2 - 200, i * 45 + 120);
+        lienzoScore.font = '60px WallApp';
+        window.alert("la longitud de user name es" + userName.length)
+        lienzoScore.fillText(score, anchoBotCanvas / 2 - 20 + userName.length, i * 45 + 120);
+        lienzoScore.font = '40px WallApp';
+        if (score < 100)
+            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 50 + userName.length, i * 45 + 120);
+            
+        if (score>=100 && score <1000)
+            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 80 + userName.length, i * 45 + 120);
+        
+        if(score >= 1000 && score <10000)
+            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 110 + userName.length, i * 45 + 120);
+        if(score >=10000)
+            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 110 + userName.length, i * 45 + 120);
+            */
+        lienzoScore.font = '40px WallApp';
+        lienzoScore.fillText(userName + ": " + score , anchoBotCanvas / 2 - 200, i * 45 + 120);
+
+
+
     };
 }
 
@@ -327,9 +369,9 @@ var botonCreditos = new Button(110, 381, 675, 750);
 var botonIdioma = new Button(110, 381, 437, 507)
 var botonMute = new Button(110, 381, 671, 741)
 
-var botonReplay = new Button(110,381,615, 674);
-var botonBackMenu = new Button(110,381,706, 763);
-var botonCerrar = new Button(22,168,15, 60);
+var botonReplay = new Button(110, 381, 615, 674);
+var botonBackMenu = new Button(110, 381, 706, 763);
+var botonCerrar = new Button(22, 168, 15, 60);
 
 var boton1 = new Button(284, 500, 147, 207);
 
@@ -355,35 +397,46 @@ function mouseCliked(e) {
         gameStates.currentState = gameStates.showCredits();
         gameStates.currentState;
     }
-    if (botonCerrar.checkClicked() && (curretStateId > 1 || curretStateId < 5))  {
+    if (botonCerrar.checkClicked() && (curretStateId > 1 || curretStateId < 5)) {
         gameStates.currentState = gameStates.menuSetup();
         gameStates.currentState;
     }
-    if (botonBackMenu.checkClicked() && curretStateId === 5)  {
+    if (botonBackMenu.checkClicked() && curretStateId === 5) {
         gameStates.currentState = gameStates.menuSetup();
         gameStates.currentState;
     }
-    if (botonReplay.checkClicked() && curretStateId === 5)  {
+    if (botonReplay.checkClicked() && curretStateId === 5) {
         gameStates.currentState = gameStates.startGame();
         gameStates.currentState;
     }
     if (botonIdioma.checkClicked() && curretStateId === 3) {
-        if(languajeSelected == 0){
+        if (languajeSelected == 0) {
             languajeSelected = 1;
-        }else if(languajeSelected == 1){
+        } else if (languajeSelected == 1) {
             languajeSelected = 0;
         }
         drawOpciones();
         console.log("SE HA CAMBIADO IDIOMA")
     }
     if (botonMute.checkClicked() && curretStateId === 3) {
-        if(mute){
+        if (mute) {
             mute = false;
-        }else{
+            window.alert("HAS DESMUTEADO EL JUEGO");
+            var audio = document.getElementById('cancion_fondo');
+            audio.src = 'musica/Dueto Rains of Castamere.mp3';
+            audio.load();
+            audio.volume = 0.1;
+            audio.play();
+        } else {
             mute = true;
+            var audio = document.getElementById('cancion_fondo');
+            audio.pause();
+            window.alert("HAS MUTEADO EL JUEGO");
+
         }
+        
         drawOpciones();
-        console.log("SE HA CAMBIADO SONIDO")
+        
     }
 
 
@@ -727,7 +780,7 @@ function gestionColisiones() {
     for (var i = 0; i < plataformas.length; i++) {
         var auxPlat = plataformas[i];
         if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
-                15 > auxPlat.x) &&
+            15 > auxPlat.x) &&
             (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
             if (!auxPlat.saltado) {
                 if (doubleJump) {
@@ -748,7 +801,7 @@ function gestionColisiones() {
             if (jumpCounter == 0) {
                 doubleJump = false;
                 jumpCounter = 5;
-                player.spriteState = 0;                
+                player.spriteState = 0;
                 specialSprites = false;
             }
 
@@ -797,7 +850,7 @@ function gestionColisiones() {
                 var id = intervalTrigger();
                 var id2 = spriteChanger();
 
-                
+
 
             } else if (powerup.type == 1 && !isPowerUp) {
 
@@ -824,7 +877,7 @@ function gestionColisiones() {
                 };
                 var id = intervalTrigger();
 
-                
+
             }
         }
     }
@@ -950,7 +1003,7 @@ controller = {
 
 loop = function () {
 
-   // console.log(puType);
+    // console.log(puType);
 
     //Gestión de la velocidad y de los sprites:
 
