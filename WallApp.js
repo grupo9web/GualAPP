@@ -733,7 +733,7 @@ function getMobileOperatingSystem() {
         document.getElementsByClassName("canvas").style.width = "100%";
 
         //document.documentElement.requestFullscreen();
-        window.scrollTo(0,1);
+        //window.scrollTo(0,1);
 
         
         return "Android";
