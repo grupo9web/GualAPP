@@ -728,6 +728,12 @@ function getMobileOperatingSystem() {
         android = true;
         window.alert("2: " + android);
 
+        document.getElementById("lienzo").style.height = "auto";
+        document.getElementById("lienzo").style.width = "100%";
+
+        document.getElementsByClassName("canvas").style.height = "auto";
+        document.getElementsByClassName("canvas").style.width = "100%";
+
         return "Android";
     }
 
