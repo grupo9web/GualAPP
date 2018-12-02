@@ -732,7 +732,7 @@ function getMobileOperatingSystem() {
         document.getElementById("lienzo").style.width = "100%";
 
         document.getElementsByClassName("canvas").style.height = "auto";
-        document.getElementsByClassName("canvas").style.width = "100%";
+        document.getElementsByClassName("canvas").style.width = "80%";
 
         return "Android";
     }
