@@ -730,7 +730,7 @@ function getMobileOperatingSystem() {
 
         
         document.getElementsByClassName("canvas").style.height = "auto";
-        document.getElementsByClassName("canvas").style.width = "70%";
+        document.getElementsByClassName("canvas").style.width = "30%";
 
         //document.documentElement.requestFullscreen();
         //window.scrollTo(0,1);
