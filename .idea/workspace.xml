@@ -17,8 +17,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="20" lean-forward="false" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+            <state relative-caret-position="238">
+              <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -34,8 +34,8 @@
       <file leaf-file-name="WallApp.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WallApp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="483" column="14" lean-forward="false" selection-start-line="483" selection-start-column="13" selection-end-line="483" selection-end-column="14" />
+            <state relative-caret-position="135">
+              <caret line="842" column="1" lean-forward="true" selection-start-line="842" selection-start-column="1" selection-end-line="842" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -92,6 +92,10 @@
       <find>android</find>
       <find>playing</find>
       <find>gameOver</find>
+      <find>power</find>
+      <find>loop</find>
+      <find>powerup</find>
+      <find>colisiones</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -100,8 +104,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/WallApp.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/WallApp.js" />
       </list>
     </option>
   </component>
@@ -195,12 +199,12 @@
       <option name="presentableId" value="Default" />
       <updated>1543500925546</updated>
       <workItem from="1543500930401" duration="1643000" />
-      <workItem from="1543502951820" duration="6845000" />
+      <workItem from="1543502951820" duration="8814000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8488000" />
+    <option name="totallyTimeSpent" value="10457000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
@@ -294,16 +298,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WallApp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="483" column="14" lean-forward="false" selection-start-line="483" selection-start-column="13" selection-end-line="483" selection-end-column="14" />
+        <state relative-caret-position="135">
+          <caret line="842" column="1" lean-forward="true" selection-start-line="842" selection-start-column="1" selection-end-line="842" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="20" lean-forward="false" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+        <state relative-caret-position="238">
+          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
       </provider>
