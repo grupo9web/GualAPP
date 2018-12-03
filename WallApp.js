@@ -37,7 +37,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////       Preguntarle a Palacios             ////////////////////////////////////////////////////////
+///////////////////////////       Preguntar        ////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,7 +187,7 @@ var audio = document.getElementById('cancion_fondo');
  *
  * */
 var curretStateId = 0;
-
+var playing;
 
 const gameStates = {
     currentState: undefined,
@@ -203,6 +203,7 @@ const gameStates = {
         container.style.display = "initial";
         menu.style.display = "none"
         curretStateId = 1;
+        playing = true;
         if (!firstRun) reset();
         firstRun = false;
     },
@@ -225,6 +226,7 @@ const gameStates = {
 
     },
     menuSetup() {
+        playing = false;
         drawMenu();
         curretStateId = 0;
         gameStates.currentState = gameStates.menu();
@@ -318,9 +320,9 @@ function drawScores() {
 
     var img = new Image();
     if (languajeSelected === 1) {
-        img.src = "Assets/AA_Menu_Ranking.png"
+        img.src = "Assets/AA_Menu_Ranking_Ing.png"
     } else if (languajeSelected === 0) {
-        img.src = "Assets/AA_Menu_Ranking.png"
+        img.src = "Assets/AA_Menu_Ranking_Esp.png"
     }
 
 
@@ -984,9 +986,10 @@ function gameOver() {
 
     player.isDead = "fifty";
 
-
-    gameStates.currentState = gameStates.gameOver();
-    gameStates.currentState;
+    if(playing) {
+        gameStates.currentState = gameStates.gameOver();
+        gameStates.currentState;
+    }
 
 }
 
