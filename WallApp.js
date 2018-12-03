@@ -1075,100 +1075,96 @@ controller = {
 
 loop = function () {
 
-    // console.log(puType);
+  if(playing) {
+      // console.log(puType);
 
-    //Gestión de la velocidad y de los sprites:
+      //Gestión de la velocidad y de los sprites:
 
-    if (controller.left || androidIzquierda && !specialSprites) {
-        if (!isPowerUp) player.spriteState = 1;
-        player.x_vel -= vx;
-    } else if (controller.right || androidDerecha && !specialSprites) {
-        if (!isPowerUp) player.spriteState = 2;
-        player.x_vel += vx;
-    } else if (!specialSprites) {
-        if (!isPowerUp) player.spriteState = 0;
-    } else {
-        androidDerecha = false;
-        androidIzquierda = false;
-    }
-
-
-
-    //Gestión del movimiento del personaje:
-    if (player.y >= (altoBotCanvas / 2) - (player.alto / 2)) {
-        player.y += player.y_vel;
-        player.y_vel += gravity;
-    } else {
-        plataformas.forEach(function (p, i) {
-
-            if (player.y_vel < 0) {
-                p.y -= player.y_vel;
-            }
-
-            if (p.y > altoBotCanvas) {
-                plataformas[i] = new Platform();
-                plataformas[i].y = p.y - altoBotCanvas;
-            }
-
-        });
-
-        player.y_vel += gravity;
-
-        if (player.y_vel >= 0) {
-            player.y += player.y_vel;
-            player.y_vel += gravity;
-        }
-        //powerupAlive = false;
-    }
-
-    plataformas.forEach(function (p, i) {
-        if (p.type == 1) {
-            if (p.x < 0 || p.x + p.ancho > anchoBotCanvas) {
-                p.vx *= -1;
-            }
-            p.x += p.vx;
-        }
-    });
+      if (controller.left || androidIzquierda && !specialSprites) {
+          if (!isPowerUp) player.spriteState = 1;
+          player.x_vel -= vx;
+      } else if (controller.right || androidDerecha && !specialSprites) {
+          if (!isPowerUp) player.spriteState = 2;
+          player.x_vel += vx;
+      } else if (!specialSprites) {
+          if (!isPowerUp) player.spriteState = 0;
+      } else {
+          androidDerecha = false;
+          androidIzquierda = false;
+      }
 
 
+      //Gestión del movimiento del personaje:
+      if (player.y >= (altoBotCanvas / 2) - (player.alto / 2)) {
+          player.y += player.y_vel;
+          player.y_vel += gravity;
+      } else {
+          plataformas.forEach(function (p, i) {
+
+              if (player.y_vel < 0) {
+                  p.y -= player.y_vel;
+              }
+
+              if (p.y > altoBotCanvas) {
+                  plataformas[i] = new Platform();
+                  plataformas[i].y = p.y - altoBotCanvas;
+              }
+
+          });
+
+          player.y_vel += gravity;
+
+          if (player.y_vel >= 0) {
+              player.y += player.y_vel;
+              player.y_vel += gravity;
+          }
+          //powerupAlive = false;
+      }
+
+      plataformas.forEach(function (p, i) {
+          if (p.type == 1) {
+              if (p.x < 0 || p.x + p.ancho > anchoBotCanvas) {
+                  p.vx *= -1;
+              }
+              p.x += p.vx;
+          }
+      });
 
 
+      player.x += player.x_vel;
+
+      player.x_vel *= 0.9; //Eje X
+
+      //Si se sale por la parte izquierda del canvas...
+      if (player.x < -32) {
+          player.x = 520;
+      } else if (player.x > 520) {
+          //Si se sale por laparte derecha...
+          player.x = -32;
+      }
+
+      if (player.y > 580 && player.isDead != "fifty") {
+          player.isDead = "true";
+          window.alert("ei" + player.isDead);
+      }
+
+      if (player.isDead == "true") gameOver();
+
+      //score++;
+  }
 
 
-
-    player.x += player.x_vel;
-
-    player.x_vel *= 0.9; //Eje X
-
-    //Si se sale por la parte izquierda del canvas...
-    if (player.x < -32) {
-        player.x = 520;
-    } else if (player.x > 520) {
-        //Si se sale por laparte derecha...
-        player.x = -32;
-    }
-
-    if (player.y > 580 && player.isDead != "fifty") {
-        player.isDead = "true";
-        window.alert("ei" + player.isDead);
-    }
-
-    if (player.isDead == "true") gameOver();
-
-    //score++;
+      lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
+      ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
 
 
+      gestionPowerUp();
+      gestionColisiones()
+      pintaPersonaje();
+      enem.drawEnemy();
+      pintaPlataformas();
+      window.requestAnimationFrame(loop);
 
-    lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
-    ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
-
-
-    gestionPowerUp();
-    gestionColisiones()
-    pintaPersonaje();
-    enem.drawEnemy();
-    pintaPlataformas();
-    window.requestAnimationFrame(loop);
 }
 
 
