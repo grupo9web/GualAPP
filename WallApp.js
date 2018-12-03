@@ -728,13 +728,13 @@ function getMobileOperatingSystem() {
         android = true;
         window.alert("2: " + android);
 
-        /*
+        
         document.getElementsByClassName("canvas").style.height = "auto";
-        document.getElementsByClassName("canvas").style.width = "150%";
-        */
+        document.getElementsByClassName("canvas").style.width = "100%";
+        /*
         document.getElementById("lienzo").style.height = "auto";
         document.getElementById("lienzo").style.width = "100%";
-
+        */
         //document.documentElement.requestFullscreen();
         //window.scrollTo(0,1);
 
