@@ -187,7 +187,7 @@ var audio = document.getElementById('cancion_fondo');
  *
  * */
 var curretStateId = 0;
-var playing;
+var playing = false;
 
 const gameStates = {
     currentState: undefined,
@@ -248,7 +248,7 @@ const gameStates = {
 
         container.style.display = "none";
         menu.style.display = "initial"
-
+        playing = false;
         gameStates.currentState = gameStates.showGameOver();
         gameStates.currentState;
     },
@@ -461,6 +461,7 @@ function mouseCliked(e) {
         gameStates.currentState;
     }
     if (botonBackMenu.checkClicked() && curretStateId === 5) {
+        playing = false;
         gameStates.currentState = gameStates.menuSetup();
         gameStates.currentState;
     }
@@ -1054,21 +1055,21 @@ controller = {
 
         var key_state = (event.type == "keydown") ? true : false;
         //window.alert("asas");
+        if(playing) {
+            switch (event.keyCode) {
 
-        switch (event.keyCode) {
+                case 37: //Flecha izquierda
+                    controller.left = key_state;
+                    break;
+                case 38: //Flecha derecha
+                    controller.up = key_state;
+                    break;
+                case 39: //Flecha de salto.
+                    controller.right = key_state;
+                    break;
 
-            case 37: //Flecha izquierda
-                controller.left = key_state;
-                break;
-            case 38: //Flecha derecha
-                controller.up = key_state;
-                break;
-            case 39: //Flecha de salto.
-                controller.right = key_state;
-                break;
-
+            }
         }
-
     }
 };
 
@@ -1183,20 +1184,21 @@ function orientation(event) {
         event.alpha + ", " +
         event.beta + ", " +
         event.gamma;
-    if (event.gamma > 8) {
-        androidDerecha = true;
-    } else {
-        androidDerecha = false;
-    }
-    if (event.gamma < -8) {
-        androidIzquierda = true;
-    } else {
-        androidIzquierda = false;
-    }
-    document.getElementById("debug").innerHTML = string + " <br/> Isq: " + androidIzquierda + " Dcha: " +
-        androidDerecha;
-    lienzo.fillText(Math.round(string), 100, 100);
-
+   if(playing) {
+       if (event.gamma > 8) {
+           androidDerecha = true;
+       } else {
+           androidDerecha = false;
+       }
+       if (event.gamma < -8) {
+           androidIzquierda = true;
+       } else {
+           androidIzquierda = false;
+       }
+      // document.getElementById("debug").innerHTML = string + " <br/> Isq: " + androidIzquierda + " Dcha: " +
+           androidDerecha;
+       //lienzo.fillText(Math.round(string), 100, 100);
+   }
 }
 
 if (window.DeviceOrientationEvent) {
