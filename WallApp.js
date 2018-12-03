@@ -785,7 +785,6 @@ function getMobileOperatingSystem() {
     }
 
     if (/android/i.test(userAgent)) {
-        window.alert("Esto es Andorid PUTAaaa: " + android);
         android = true;
         window.alert("2: " + android);
 
@@ -1145,7 +1144,7 @@ loop = function () {
 
       if (player.y > 580 && player.isDead != "fifty") {
           player.isDead = "true";
-          window.alert("ei" + player.isDead);
+          //window.alert("ei" + player.isDead);
       }
 
       if (player.isDead == "true") gameOver();
