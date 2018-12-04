@@ -207,22 +207,20 @@ const gameStates = {
         if (!firstRun) reset();
         firstRun = false;
     },
-    game() {
-        //El juego en si
-    },
-    menu() {
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////  
+    setUp() {
 
         if (!mute) {
             audio.src = 'musica/Dueto Rains of Castamere.mp3';
             audio.load();
             audio.play();
             audio.volume = 0.1;
-            document.addEventListener('click', mouseCliked, false);
         }
+        gameStates.currentState = gameStates.menuSetup()
+        gameStates.currentState;
+    },
+    menu() {
 
+        document.addEventListener('click', mouseCliked, false);
 
     },
     menuSetup() {
@@ -275,7 +273,14 @@ const gameStates = {
 
 window.onload = function () {
     //getMobileOperatingSystem();
-    gameStates.currentState = gameStates.menuSetup()
+
+    var viewport = document.getElementById("viewport");
+    var screenHeight = screen.availHeight;
+    var screenWitdth = screen.availWidth;
+
+
+
+    gameStates.currentState = gameStates.setUp()
     gameStates.currentState;
 
 
@@ -291,7 +296,7 @@ window.onload = function () {
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulio");
+        userName = prompt("Please enter your name", "Hulio" + screenHeight + " / " + screenWitdth);
         if (userName.length <= 10)
             nombreCorrecto = true;
 
@@ -462,7 +467,7 @@ function mouseCliked(e) {
     }
     if (botonBackMenu.checkClicked() && curretStateId === 5) {
         playing = false;
-        gameStates.currentState = gameStates.menuSetup();
+        gameStates.currentState = gameStates.setUp();
         gameStates.currentState;
     }
     if (botonReplay.checkClicked() && curretStateId === 5) {
@@ -845,109 +850,110 @@ function pintaPlataformas() {
 
 
 function gestionColisiones() {
-    for (var i = 0; i < plataformas.length; i++) {
-        var auxPlat = plataformas[i];
-        if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
-                15 > auxPlat.x) &&
-            (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
-            if (!auxPlat.saltado) {
-                if (doubleJump) {
-                    player.y_vel = 2 * vy;
-                    jumpCounter--;
-                } else player.y_vel = vy;
-            }
-
-            if (auxPlat.type == 2) {
-                plataformas[i].saltado = true;
-            }
-
-            if (!auxPlat.puntuado) {
-                if (!player.isDead) {
-                    score += 10;
+    if(playing) {
+        for (var i = 0; i < plataformas.length; i++) {
+            var auxPlat = plataformas[i];
+            if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
+                    15 > auxPlat.x) &&
+                (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
+                if (!auxPlat.saltado) {
+                    if (doubleJump) {
+                        player.y_vel = 2 * vy;
+                        jumpCounter--;
+                    } else player.y_vel = vy;
                 }
-                plataformas[i].puntuado = true;
+
+                if (auxPlat.type == 2) {
+                    plataformas[i].saltado = true;
+                }
+
+                if (!auxPlat.puntuado) {
+                    if (!player.isDead) {
+                        score += 10;
+                    }
+                    plataformas[i].puntuado = true;
+                }
+
+                if (jumpCounter == 0) {
+                    doubleJump = false;
+                    jumpCounter = 3;
+                    player.spriteState = 0;
+                    specialSprites = false;
+                    isPowerUp = false;
+                }
+
             }
 
-            if (jumpCounter == 0) {
-                doubleJump = false;
-                jumpCounter = 3;
-                player.spriteState = 0;
-                specialSprites = false;
-                isPowerUp = false;
-            }
+            player.saltado = true;
 
-        }
+            //Colisiones con los power ups
+            if (player.y_vel > 0 && powerup.x > player.x && (powerup.x + powerup.ancho) < (player.x + player.ancho) &&
+                (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
+            ) {
 
-        player.saltado = true;
+                if (powerup.type == 0 && !isPowerUp) {
+                    player.y_vel = -20;
+                    gravity = 0.1;
 
-        //Colisiones con los power ups
-        if (player.y_vel > 0 && powerup.x > player.x && (powerup.x + powerup.ancho) < (player.x + player.ancho) &&
-            (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
-        ) {
-
-            if (powerup.type == 0 && !isPowerUp) {
-                player.y_vel = -20;
-                gravity = 0.1;
-
-                dragonSprite.src = "pu2.png";
+                    dragonSprite.src = "pu2.png";
 
 
-                player.spriteState = 3;
+                    player.spriteState = 3;
 
-                specialSprites = true;
-                isPowerUp = true;
+                    specialSprites = true;
+                    isPowerUp = true;
 
-                if (!player.isDead) score += 50;
+                    if (!player.isDead) score += 50;
 
-                //Intervalo para el PU
-                function intervalTrigger() {
-                    return window.setInterval(function () {
-                        puType = Math.round(Math.random());
-                        gravity = 0.2;
-                        dragonSprite.src = "pu1.png";
+                    //Intervalo para el PU
+                    function intervalTrigger() {
+                        return window.setInterval(function () {
+                            puType = Math.round(Math.random());
+                            gravity = 0.2;
+                            dragonSprite.src = "pu1.png";
 
-                        window.clearInterval(id);
-                    }, 800);
-                };
+                            window.clearInterval(id);
+                        }, 800);
+                    };
 
-                function spriteChanger() {
-                    return window.setInterval(function () {
-                        player.spriteState = 0;
-                        isPowerUp = false;
-                        specialSprites = false;
-                        window.clearInterval(id2);
-                    }, 1500);
-                };
-                var id = intervalTrigger();
-                var id2 = spriteChanger();
-
-
-
-            } else if (powerup.type == 1 && !isPowerUp) {
-
-                powerup2.src = "pu2.png";
-
-                doubleJump = true;
-
-                player.spriteState = 4;
-
-                specialSprites = true;
-                isPowerUp = true;
-
-                if (!player.isDead) score += 50;
-
-                //Intervalo para el PU
-                function intervalTrigger() {
-                    return window.setInterval(function () {
-                        puType = Math.round(Math.random());
-                        powerup2.src = "purplePowerup.png";
-
-                        window.clearInterval(id);
-                    }, 800);
-                };
-                var id = intervalTrigger();
+                    function spriteChanger() {
+                        return window.setInterval(function () {
+                            player.spriteState = 0;
+                            isPowerUp = false;
+                            specialSprites = false;
+                            window.clearInterval(id2);
+                        }, 1500);
+                    };
+                    var id = intervalTrigger();
+                    var id2 = spriteChanger();
 
 
+                } else if (powerup.type == 1 && !isPowerUp) {
+
+                    powerup2.src = "pu2.png";
+
+                    doubleJump = true;
+
+                    player.spriteState = 4;
+
+                    specialSprites = true;
+                    isPowerUp = true;
+
+                    if (!player.isDead) score += 50;
+
+                    //Intervalo para el PU
+                    function intervalTrigger() {
+                        return window.setInterval(function () {
+                            puType = Math.round(Math.random());
+                            powerup2.src = "purplePowerup.png";
+
+                            window.clearInterval(id);
+                        }, 800);
+                    };
+                    var id = intervalTrigger();
+
+
+                }
             }
         }
     }
