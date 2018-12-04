@@ -274,6 +274,12 @@ const gameStates = {
 window.onload = function () {
     //getMobileOperatingSystem();
 
+    var viewport = document.getElementById("viewport");
+    var screenHeight = screen.availHeight;
+    var screenWitdth = screen.availWidth;
+
+
+
     gameStates.currentState = gameStates.setUp()
     gameStates.currentState;
 
@@ -290,7 +296,7 @@ window.onload = function () {
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulio");
+        userName = prompt("Please enter your name", "Hulio" + screenHeight + " / " + screenWitdth);
         if (userName.length <= 10)
             nombreCorrecto = true;
 
