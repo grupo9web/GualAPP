@@ -843,9 +843,9 @@ function pintaPersonaje(boolAux) {
     if (player.spriteState == 5 && controller.left || androidIzquierda) lienzo.drawImage(powerup3SpriteI, player.x, player.y);
     if (player.spriteState == 5 && controller.right || androidDerecha) lienzo.drawImage(powerup3SpriteD, player.x, player.y);
 
-    if (powerup.type == 0) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
-    else if (powerup.type == 1) lienzo.drawImage(powerup2, powerup.x, powerup.y);
-    else if (powerup.type == 2) lienzo.drawImage(powerup3, powerup.x, powerup.y);
+    if (powerup.type == 0 && !isPowerUp) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
+    else if (powerup.type == 1 && !isPowerUp) lienzo.drawImage(powerup2, powerup.x, powerup.y);
+    else if (powerup.type == 2 && !isPowerUp) lienzo.drawImage(powerup3, powerup.x, powerup.y);
 
 }
 
@@ -1217,7 +1217,7 @@ loop = function () {
     lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
     ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
 
-
+    console.log(isPowerUp);
     gestionPowerUp();
     gestionColisiones()
     pintaPersonaje();
