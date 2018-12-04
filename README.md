@@ -8,11 +8,6 @@ Usa el ratón para moverte por los menús y utiliza las flechas izq y dcha para 
 
 Para moverte por los menús utiliza la entrada táctil. Para mover al personaje se usa el magnetómetro del dispositivo. Gira el móvil o tablet para poder manejar al personaje.
 
-Puedes jugar a GualAPP haciendo click en este enlace https://grupo9web.github.io/GualAPP/
-
-Puedes acceder a nuestra web mediante este enlace https://grupo9web.github.io/WebHulioEntertainment/
-
-Consulta nuestro repositorio en GitHub: https://github.com/grupo9web/GualAPP
 
 ## Gual App - Documento de Diseño
 
@@ -20,6 +15,12 @@ Consulta nuestro repositorio en GitHub: https://github.com/grupo9web/GualAPP
 ## 1. Introducción
 
 Este es el documento de diseño de *Gual App*, un videojuego web desarrollado en *HTML5*  como práctica de la asignatura *Juegos para web y redes sociales* del Grado de Diseño y Desarrollo de Videojuegos de la *Universidad Rey Juan Carlos*. 
+
+Puedes jugar a GualAPP haciendo click en este enlace https://grupo9web.github.io/GualAPP/
+
+Puedes acceder a nuestra web mediante este enlace https://grupo9web.github.io/WebHulioEntertainment/
+
+Consulta nuestro repositorio en GitHub: https://github.com/grupo9web/GualAPP
 
 
 ### 1.1 Concepto del juego
