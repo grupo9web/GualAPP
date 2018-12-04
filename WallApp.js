@@ -17,52 +17,52 @@ var altoTopCanvasight = tCanvas.height;
 
 //Variables para la carga de imágenes
 var background = new Image();
-background.src = "wall.png";
+background.src = "Assets/Wall/wall.png";
 
 var topBackgorund = new Image();
-topBackgorund.src = "topwall.png"
+topBackgorund.src = "Assets/Wall/topwall.png"
 
 var plataformasImg = new Image();
-plataformasImg.src = "plataforma.png"
+plataformasImg.src = "Assets/Plataformas/plataforma.png"
 
 var plataformasImg2 = new Image();
-plataformasImg2.src = "plataforma2.png"
+plataformasImg2.src = "Assets/Plataformas/plataforma2.png"
 
 var dragonSprite = new Image();
-dragonSprite.src = "pu1.png";
+dragonSprite.src = "Assets/PowerUp/pu1.png";
 
 var jon = new Image();
-jon.src = 'Jon.png';
+jon.src = 'Assets/Jon/Jon.png';
 
 
 var jonLeft = new Image();
-jonLeft.src = 'JonI.png';
+jonLeft.src = 'Assets/Jon/JonI.png';
 
 var jonRight = new Image();
-jonRight.src = 'JonD.png';
+jonRight.src = 'Assets/Jon/JonD.png';
 
 var jonDragon = new Image();
-jonDragon.src = "drogonn.png";
+jonDragon.src = "Assets/drogonn.png";
 
 var powerup2 = new Image();
 powerup2.src = "purplePowerup.png";
 
 var powerup3 = new Image();
-powerup3.src = "bluePowerup.png"
+powerup3.src = "Assets/PowerUp/bluePowerup.png"
 
 var powerup2Sprite = new Image();
-powerup2Sprite.src = "pu2Sprite.png";
+powerup2Sprite.src = "Assets/Jon/pu2Sprite.png";
 var powerup2SpriteI = new Image();
-powerup2SpriteI.src = "pu2SpriteI.png";
+powerup2SpriteI.src = "Assets/Jon/pu2SpriteI.png";
 var powerup2SpriteD = new Image();
-powerup2SpriteD.src = "pu2SpriteD.png";
+powerup2SpriteD.src = "Assets/Jon/pu2SpriteD.png";
 
 var powerup3Sprite = new Image();
-powerup3Sprite.src = "pu3Sprite.png";
+powerup3Sprite.src = "Assets/Jon/pu3Sprite.png";
 var powerup3SpriteI = new Image();
-powerup3SpriteI.src = "pu3SpriteI.png";
+powerup3SpriteI.src = "Assets/Jon/pu3SpriteI.png";
 var powerup3SpriteD = new Image();
-powerup3SpriteD.src = "pu3SpriteD.png";
+powerup3SpriteD.src = "Assets/Jon/pu3SpriteD.png";
 
 
 //Sprites de enemigo + pierda
@@ -257,12 +257,12 @@ window.onload = function () {
     //Choque piedra o muerto
     sonidoMuerto.src = 'bancoSonidos/choque piedra.mp3'
     sonidoMuerto.load();
-    sonidoMuerto.volume = 0.1;
+    sonidoMuerto.volume = 0.3;
 
     //Dragon
     sonidoDragon.src = 'bancoSonidos/sonidoDragon.mp3'
     sonidoDragon.load();
-    sonidoDragon.volume = 0.1;
+    sonidoDragon.volume = 0.3;
 
     if (screenHeight === 640) {
         document.querySelector("meta[name=viewport]").setAttribute(
@@ -903,7 +903,7 @@ function gestionColisiones() {
                     player.y_vel = -20;
                     gravity = 0.1;
                     sonidoDragon.play();
-                    dragonSprite.src = "pu2.png";
+                    dragonSprite.src = "Assets/PowerUp/pu2.png";
 
 
                     player.spriteState = 3;
@@ -918,7 +918,7 @@ function gestionColisiones() {
                         return window.setInterval(function () {
                             puType = Math.round(Math.random() * 2);
                             gravity = 0.2;
-                            dragonSprite.src = "pu1.png";
+                            dragonSprite.src = "Assets/PowerUp/pu1.png";
 
                             window.clearInterval(id);
                         }, 800);
@@ -953,7 +953,7 @@ function gestionColisiones() {
                     function intervalTrigger() {
                         return window.setInterval(function () {
                             puType = Math.round(Math.random() * 2);
-                            powerup2.src = "purplePowerup.png";
+                            powerup2.src = "Assets/PowerUp/purplePowerup.png";
 
                             window.clearInterval(id);
                         }, 800);
@@ -974,7 +974,7 @@ function gestionColisiones() {
                     function intervalTrigger() {
                         return window.setInterval(function () {
                             puType = Math.round(Math.random() * 3);
-                            powerup3.src = "bluePowerup.png";
+                            powerup3.src = "Assets/PowerUp/bluePowerup.png";
                             window.clearInterval(id);
                         }, 800);
                     };
