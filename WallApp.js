@@ -278,7 +278,7 @@ window.onload = function () {
     var screenHeight = screen.availHeight;
     var screenWitdth = screen.availWidth;
 
-    if(screenHeight == 641){
+    if(screenHeight == 640){
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0');
@@ -317,7 +317,7 @@ window.onload = function () {
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulio" + screenHeight + " / " + screenWitdth);
+        userName = prompt("Please enter your name", "Hulio" );
         if (userName.length <= 10)
             nombreCorrecto = true;
 
