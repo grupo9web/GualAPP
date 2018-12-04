@@ -737,7 +737,7 @@ function arrow(positionX, positionY, vY) {
                 // Bottom canvas
                 this.fall();
                 lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posYbelow, 21, 16);
-                //  pintaPersonaje(true);
+               
                 // Collider
                 lienzo.rect(this.posX, this.posYbelow, this.projectileWidth, this.proejctileHeight);
                 lienzo.stroke();
@@ -761,8 +761,8 @@ function arrow(positionX, positionY, vY) {
                 (this.posYbelow + this.projectileHeight > player.y) && (this.posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
                 sonidoMuerto.play();
                 this.existence = false;
-                gameStates.currentState = gameStates.gameOver();
-                gameStates.currentState;
+                gravity = 0.5;
+                player.isDead = true;
             }
         }
     }
@@ -844,7 +844,7 @@ function pintaPlataformas() {
 
 
 function gestionColisiones() {
-    if (playing) {
+    if (playing && !player.isDead) {
         for (var i = 0; i < plataformas.length; i++) {
             var auxPlat = plataformas[i];
             if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
