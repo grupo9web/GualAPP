@@ -8,7 +8,7 @@ Usa el ratón para moverte por los menús y utiliza las flechas izq y dcha para 
 
 Para moverte por los menús utiliza la entrada táctil. Para mover al personaje se usa el magnetómetro del dispositivo. Gira el móvil o tablet para poder manejar al personaje.
 
-Puedes jugar a GualAPP haciendo click en este enlace [https://grupo9web.github.io/GualAPP/]
+Puedes jugar a GualAPP haciendo click en este enlace https://grupo9web.github.io/GualAPP/
 
 
 ## Gual App - Documento de Diseño
