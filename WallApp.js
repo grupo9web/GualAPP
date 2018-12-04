@@ -231,9 +231,6 @@ const gameStates = {
 
 
 window.onload = function () {
-    //getMobileOperatingSystem();
-
-    //var viewport = document.getElementById("viewport");
     var screenHeight = screen.availHeight;
     var screenWitdth = screen.availWidth;
 
@@ -303,7 +300,7 @@ window.onload = function () {
 
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Huliocambio");
+        userName = prompt("Please enter your name", "Hulio");
         if (userName == null) {
             userName = "Jugador";
         }
@@ -325,25 +322,6 @@ function drawMenu() {
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
     };
-
-    var start = function() {
-        screen.orientation.lock('landscape-primary').then(
-          startInternal,
-          function() {
-            alert('To start, rotate your screen to landscape.');
-    
-            var orientationChangeHandler = function() {
-              if (!screen.orientation.type.startsWith('landscape')) {
-                return;
-              }
-              screen.orientation.removeEventListener('change', orientationChangeHandler);
-              startInternal();
-            }
-    
-            screen.orientation.addEventListener('change', orientationChangeHandler);
-          });
-      }
-      start;
 }
 
 
@@ -417,28 +395,6 @@ function drawGameOver() {
 
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
-
-        ///////////////////////////////////////////////////////////// PINTAR LA PUNTACION DE LA PARTIDA //////////////////////////////////////////
-
-        //lienzoScore.fillText(mejoresPuntuaciones[i].nombre + ": " + mejoresPuntuaciones[i].puntuacion, anchoBotCanvas / 2 - 150, i * 45 + 416);
-        /*
-        lienzoScore.font = '40px WallApp';
-        lienzoScore.fillText(userName + ": ", anchoBotCanvas / 2 - 200, i * 45 + 120);
-        lienzoScore.font = '60px WallApp';
-        window.alert("la longitud de user name es" + userName.length)
-        lienzoScore.fillText(score, anchoBotCanvas / 2 - 20 + userName.length, i * 45 + 120);
-        lienzoScore.font = '40px WallApp';
-        if (score < 100)
-            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 50 + userName.length, i * 45 + 120);
-            
-        if (score>=100 && score <1000)
-            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 80 + userName.length, i * 45 + 120);
-        
-        if(score >= 1000 && score <10000)
-            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 110 + userName.length, i * 45 + 120);
-        if(score >=10000)
-            lienzoScore.fillText("PTS", anchoBotCanvas / 2 + 110 + userName.length, i * 45 + 120);
-            */
         lienzoScore.font = '40px WallApp';
         lienzoScore.fillText(userName + ": " + score, anchoBotCanvas / 2 - 200, i * 45 + 120);
 
@@ -612,13 +568,13 @@ function Platform() {
             setDificultad();
             newLevel++;
         }
-    } else if (score > 250) {
+    } else if (score > 1000) {
         this.probabilidad = [0, 0, 0, 1, 2, 2];
         if (newLevel == 1) {
             setDificultad();
             newLevel++;
         }
-    } else if (score > 100) {
+    } else if (score > 500) {
         this.probabilidad = [0, 0, 0, 1, 2];
         if (newLevel == 0) {
             setDificultad();
@@ -812,18 +768,11 @@ function getMobileOperatingSystem() {
 
         document.getElementsByClassName("canvas").style.height = "auto";
         document.getElementsByClassName("canvas").style.width = "100%";
-        /*
-        document.getElementById("lienzo").style.height = "auto";
-        document.getElementById("lienzo").style.width = "100%";
-        */
-        //document.documentElement.requestFullscreen();
-        //window.scrollTo(0,1);
 
 
         return "Android";
     }
 
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
         return "iOS";
     }
@@ -1226,7 +1175,6 @@ loop = function () {
     lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
     ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
 
-    console.log(isPowerUp);
     gestionPowerUp();
     gestionColisiones()
     pintaPersonaje();
@@ -1263,4 +1211,5 @@ if (window.DeviceOrientationEvent) {
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
+screen.orientation.lock('portrait');
 window.requestAnimationFrame(loop);
