@@ -4,9 +4,9 @@
 
 Usa el ratón para moverte por los menús y utiliza las flechas izq y dcha para mover al personaje y conseguir ascender entre plataformas
 
-### MOVIL
+### MÓVIL
 
-Para moverte por los menús utiliza la entrada tactil. Para mover al personaje se usa el magnetómetro del dispositivo. Gira el movil o tablet para poder manejar al personaje.
+Para moverte por los menús utiliza la entrada táctil. Para mover al personaje se usa el magnetómetro del dispositivo. Gira el móvil o tablet para poder manejar al personaje.
 
 Puedes jugar a GualAPP haciendo click en este enlace [https://grupo9web.github.io/GualAPP/]
 
