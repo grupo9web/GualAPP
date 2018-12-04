@@ -1094,8 +1094,8 @@ loop = function () {
         } else if (!specialSprites) {
             if (!isPowerUp) player.spriteState = 0;
         } else {
-            androidDerecha = false;
-            androidIzquierda = false;
+            //androidDerecha = false;
+            //androidIzquierda = false;
         }
 
 
@@ -1180,10 +1180,6 @@ function sortNumber(a, b) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function orientation(event) {
-    var string = "Magnetometer: " +
-        event.alpha + ", " +
-        event.beta + ", " +
-        event.gamma;
     if (playing) {
         if (event.gamma > 5) {
             androidDerecha = true;
