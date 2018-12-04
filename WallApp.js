@@ -1024,6 +1024,8 @@ function reset() {
 
 function gameOver() {
 
+    controller.left = false;
+    controller.right = false;
     player.x = -player.ancho - 10;
     player.y = -100;
     player.y_vel = 0;
