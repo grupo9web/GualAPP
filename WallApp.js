@@ -761,7 +761,7 @@ function arrow(positionX, positionY, vY) {
             } else {
                 // Bottom canvas
                 this.fall();
-                lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, posYbelow, 21, 16);
+                lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posYbelow, 21, 16);
 
                 // Collider
                 lienzo.rect(this.posX, posYbelow, this.projectileWidth, this.proejctileHeight);
