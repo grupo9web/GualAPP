@@ -45,7 +45,7 @@ var jonDragon = new Image();
 jonDragon.src = "Assets/drogonn.png";
 
 var powerup2 = new Image();
-powerup2.src = "purplePowerup.png";
+powerup2.src = "Assets/PowerUp/purplePowerup.png";
 
 var powerup3 = new Image();
 powerup3.src = "Assets/PowerUp/bluePowerup.png"
@@ -128,8 +128,9 @@ var audio = document.getElementById('cancion_fondo');
 var sonidoSalto = document.getElementById('sonidoSaltoNormal');
 var sonidoSaltoLargo = document.getElementById('sonidoSaltoLargo');
 var sonidoPowerUp = document.getElementById('sonidoPowerUp');
-var sonidoMuerto = document.getElementById('sonidoMuerto');
+var sonidoChoquePiedra = document.getElementById('sonidoChoquePiedra');
 var sonidoDragon = document.getElementById('sonidoDragon');
+var sonidoMuerte = document.getElementById('sonidoMuerte');
 
 
 //Estados
@@ -255,9 +256,14 @@ window.onload = function () {
     sonidoPowerUp.volume = 0.1
 
     //Choque piedra o muerto
-    sonidoMuerto.src = 'bancoSonidos/choque piedra.mp3'
-    sonidoMuerto.load();
-    sonidoMuerto.volume = 0.3;
+    sonidoChoquePiedra.src = 'bancoSonidos/choque piedra.mp3'
+    sonidoChoquePiedra.load();
+    sonidoChoquePiedra.volume = 0.3;
+
+    //Choque piedra o muerto
+    sonidoMuerte.src = 'bancoSonidos/sonidoMuerte.mp3'
+    sonidoMuerte.load();
+    sonidoMuerte.volume = 0.3;
 
     //Dragon
     sonidoDragon.src = 'bancoSonidos/sonidoDragon.mp3'
@@ -759,7 +765,7 @@ function arrow(positionX, positionY, vY) {
         if (playing) {
             if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
                 (this.posYbelow + this.projectileHeight > player.y) && (this.posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
-                sonidoMuerto.play();
+                sonidoChoquePiedra.play();
                 this.existence = false;
                 gravity = 0.5;
                 player.isDead = true;
@@ -1023,8 +1029,7 @@ function gameOver() {
     player.y_vel = 0;
     gravity = 0;
 
-    sonidoMuerto.play();
-
+    sonidoMuerte.play();
 
     player.isDead = "fifty";
 
