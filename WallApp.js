@@ -258,7 +258,7 @@ window.onload = function () {
     //Choque piedra o muerto
     sonidoChoquePiedra.src = 'bancoSonidos/choque piedra nuevo.mp3'
     sonidoChoquePiedra.load();
-    sonidoChoquePiedra.volume = 0.3;
+    sonidoChoquePiedra.volume = 0.7;
 
     //Choque piedra o muerto
     sonidoMuerte.src = 'bancoSonidos/sonidoMuerte.mp3'
