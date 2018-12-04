@@ -278,7 +278,7 @@ window.onload = function () {
     var screenHeight = screen.availHeight;
     var screenWitdth = screen.availWidth;
 
-    if(screenHeight < 641){
+    if(screenHeight == 641){
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0');
@@ -286,13 +286,13 @@ window.onload = function () {
     }
 
 
-    if(screenHeight < 733){
+    else if(screenHeight== 732){
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=0');
     }
 
-    if(screenHeight > 733){
+    else {
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
