@@ -175,6 +175,10 @@ var mute = false;
 
 
 var audio = document.getElementById('cancion_fondo');
+var sonidoSalto = document.getElementById('sonidoSaltoNormal');
+var sonidoSaltoLargo = document.getElementById('sonidoSaltoLargo');
+var sonidoPowerUp= document.getElementById('sonidoPowerUp');
+var sonidoMuerto = document.getElementById('sonidoMuerto');
 
 
 //Estados
@@ -275,6 +279,53 @@ const gameStates = {
 window.onload = function () {
     //getMobileOperatingSystem();
 
+    //var viewport = document.getElementById("viewport");
+    var screenHeight = screen.availHeight;
+    var screenWitdth = screen.availWidth;
+
+    //Carga de los sonidos
+    //salto normal
+    sonidoSalto.src = 'bancoSonidos/Salto normal.mp3';
+    sonidoSalto.load();
+    sonidoSalto.volume = 0.1;
+    //salto largo
+    sonidoSaltoLargo.src = 'bancoSonidos/Salto largo.mp3';
+    sonidoSaltoLargo.load();
+    sonidoSaltoLargo.volume = 0.1;
+
+    //powerup
+    sonidoPowerUp.src = 'bancoSonidos/Powerup.mp3'
+    sonidoPowerUp.load();
+    sonidoPowerUp.volume = 0.1
+
+    //Choque piedra o muerto
+    sonidoMuerto.src = 'bancoSonidos/choque piedra.mp3'
+    sonidoMuerto.load();
+    sonidoMuerto.volume = 0.1;
+    
+    if(screenHeight === 640){
+        console.log("hola hulio");
+        document.querySelector("meta[name=viewport]").setAttribute(
+            'content',
+            'width=device-width, initial-scale=0.6, maximum-scale=0.6, user-scalable=0');
+    }
+
+
+    else if(screenHeight === 732){
+        document.querySelector("meta[name=viewport]").setAttribute(
+            'content',
+            'width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0');
+    }
+
+    else {
+        document.querySelector("meta[name=viewport]").setAttribute(
+            'content',
+            'width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=0');
+    }
+    document.body.addEventListener('touchmove', function(e){ e.preventDefault(); });
+
+
+
     gameStates.currentState = gameStates.setUp()
     gameStates.currentState;
 
@@ -291,11 +342,14 @@ window.onload = function () {
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulio");
-        if (userName.length <= 10)
+        userName = prompt("Please enter your name", "Hulioooo" );
+       if(userName == null){
+           userName = "Jugador";
+       }
+       if (userName.length <= 10)
             nombreCorrecto = true;
 
-        else
+       else
             window.alert("La longitud del nombre debe ser menor a 10 caracteres incluyendo espacios");
 
     }
@@ -760,13 +814,15 @@ function arrow(positionX, positionY, vY) {
 
 
     this.collision = function (player) {
-        if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
-            (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
-            this.existence = false;
-            gameStates.currentState = gameStates.gameOver();
-            gameStates.currentState;
-        }
-
+       if(playing) {
+           if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
+               (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
+               sonidoMuerto.play();
+               this.existence = false;
+               gameStates.currentState = gameStates.gameOver();
+               gameStates.currentState;
+           }
+       }
     }
 }
 
@@ -854,8 +910,13 @@ function gestionColisiones() {
                 if (!auxPlat.saltado) {
                     if (doubleJump) {
                         player.y_vel = 2 * vy;
+                        sonidoSaltoLargo.play();
                         jumpCounter--;
-                    } else player.y_vel = vy;
+                    } else{
+                        player.y_vel = vy;
+                        sonidoSalto.play();
+                        console.log("SAlto normal")
+                    } 
                 }
 
                 if (auxPlat.type == 2) {
@@ -885,13 +946,13 @@ function gestionColisiones() {
             if (player.y_vel > 0 && powerup.x > player.x && (powerup.x + powerup.ancho) < (player.x + player.ancho) &&
                 (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
             ) {
-
+                
                 if (powerup.type == 0 && !isPowerUp) {
                     player.y_vel = -20;
                     gravity = 0.1;
-
+                    sonidoPowerUp.play();
                     dragonSprite.src = "pu2.png";
-
+                    
 
                     player.spriteState = 3;
 
@@ -924,7 +985,7 @@ function gestionColisiones() {
 
 
                 } else if (powerup.type == 1 && !isPowerUp) {
-
+                    sonidoPowerUp.play();
                     powerup2.src = "pu2.png";
 
                     doubleJump = true;
@@ -983,6 +1044,8 @@ function gameOver() {
     player.y = - 100;
     player.y_vel = 0;
     gravity = 0;
+
+    sonidoMuerto.play();
 
 
     player.isDead = "fifty";
