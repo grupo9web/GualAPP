@@ -256,7 +256,7 @@ window.onload = function () {
     sonidoPowerUp.volume = 0.1
 
     //Choque piedra o muerto
-    sonidoChoquePiedra.src = 'bancoSonidos/choque piedra.mp3'
+    sonidoChoquePiedra.src = 'bancoSonidos/choque piedra nuevo.mp3'
     sonidoChoquePiedra.load();
     sonidoChoquePiedra.volume = 0.3;
 
