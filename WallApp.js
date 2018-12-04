@@ -134,6 +134,7 @@ var sonidoSalto = document.getElementById('sonidoSaltoNormal');
 var sonidoSaltoLargo = document.getElementById('sonidoSaltoLargo');
 var sonidoPowerUp = document.getElementById('sonidoPowerUp');
 var sonidoMuerto = document.getElementById('sonidoMuerto');
+var sonidoDragon = document.getElementById('sonidoDragon');
 
 
 //Estados
@@ -241,7 +242,10 @@ window.onload = function () {
     var screenHeight = screen.availHeight;
     var screenWitdth = screen.availWidth;
 
-    //Carga de los sonidos
+    /*
+    * EFECTOS DE SONIDO
+    */
+
     //salto normal
     sonidoSalto.src = 'bancoSonidos/Salto normal.mp3';
     sonidoSalto.load();
@@ -260,6 +264,11 @@ window.onload = function () {
     sonidoMuerto.src = 'bancoSonidos/choque piedra.mp3'
     sonidoMuerto.load();
     sonidoMuerto.volume = 0.1;
+
+     //Dragon
+     sonidoDragon.src = 'bancoSonidos/sonidoDragon.mp3'
+     sonidoDragon.load();
+     sonidoDragon.volume = 0.1;
 
     if (screenHeight === 640) {
         console.log("hola hulio");
@@ -893,7 +902,7 @@ function gestionColisiones() {
                 if (powerup.type == 0 && !isPowerUp) {
                     player.y_vel = -20;
                     gravity = 0.1;
-                    sonidoPowerUp.play();
+                    sonidoDragon.play();
                     dragonSprite.src = "pu2.png";
 
 
