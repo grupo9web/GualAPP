@@ -821,8 +821,8 @@ function pintaPersonaje(boolAux) {
     if (player.spriteState == 2) lienzo.drawImage(jonRight, player.x, player.y);
     if (player.spriteState == 3) lienzo.drawImage(jonDragon, player.x - 150, player.y - 62);
     if (player.spriteState == 4) lienzo.drawImage(powerup2Sprite, player.x, player.y);
-    if (player.spriteState == 4 && controller.left) lienzo.drawImage(powerup2SpriteI, player.x, player.y);
-    if (player.spriteState == 4 && controller.right) lienzo.drawImage(powerup2SpriteD, player.x, player.y);
+    if (player.spriteState == 4 && controller.left || androidIzquierda) lienzo.drawImage(powerup2SpriteI, player.x, player.y);
+    if (player.spriteState == 4 && controller.right || androidDerecha) lienzo.drawImage(powerup2SpriteD, player.x, player.y);
 
     if (powerup.type == 0) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
     else if (powerup.type == 1) lienzo.drawImage(powerup2, powerup.x, powerup.y);
