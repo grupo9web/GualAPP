@@ -207,22 +207,20 @@ const gameStates = {
         if (!firstRun) reset();
         firstRun = false;
     },
-    game() {
-        //El juego en si
-    },
-    menu() {
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////// MUSICA TO FLAMEN //////////////////////////////////////////////////////  
+    setUp() {
 
         if (!mute) {
             audio.src = 'musica/Dueto Rains of Castamere.mp3';
             audio.load();
             audio.play();
             audio.volume = 0.1;
-            document.addEventListener('click', mouseCliked, false);
         }
+        gameStates.currentState = gameStates.menuSetup()
+        gameStates.currentState;
+    },
+    menu() {
 
+        document.addEventListener('click', mouseCliked, false);
 
     },
     menuSetup() {
@@ -275,7 +273,8 @@ const gameStates = {
 
 window.onload = function () {
     //getMobileOperatingSystem();
-    gameStates.currentState = gameStates.menuSetup()
+
+    gameStates.currentState = gameStates.setUp()
     gameStates.currentState;
 
 
@@ -462,7 +461,7 @@ function mouseCliked(e) {
     }
     if (botonBackMenu.checkClicked() && curretStateId === 5) {
         playing = false;
-        gameStates.currentState = gameStates.menuSetup();
+        gameStates.currentState = gameStates.setUp();
         gameStates.currentState;
     }
     if (botonReplay.checkClicked() && curretStateId === 5) {
