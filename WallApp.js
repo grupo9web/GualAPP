@@ -1082,7 +1082,6 @@ function setDificultad() {
     document.getElementById("levelup").style.left =  $("#lienzo").offset().left + 75 + "px";
     document.getElementById("levelup").style.display = 'block'
 
-
     function intervalTrigger() {
         return window.setInterval(function () {
             document.getElementById("levelup").style.display = 'none'
@@ -1210,7 +1209,6 @@ loop = function () {
 
         if (player.isDead == "true") gameOver();
 
-        //score++;
     }
 
 
