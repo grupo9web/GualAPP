@@ -303,7 +303,7 @@ window.onload = function () {
 
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulio");
+        userName = prompt("Please enter your name", "Huliocambio");
         if (userName == null) {
             userName = "Jugador";
         }
@@ -325,6 +325,25 @@ function drawMenu() {
     img.onload = function () {
         cmenu.drawImage(img, 0, 0, img.width, img.height, 0, 0, menu.width, menu.height);
     };
+
+    var start = function() {
+        screen.orientation.lock('landscape-primary').then(
+          startInternal,
+          function() {
+            alert('To start, rotate your screen to landscape.');
+    
+            var orientationChangeHandler = function() {
+              if (!screen.orientation.type.startsWith('landscape')) {
+                return;
+              }
+              screen.orientation.removeEventListener('change', orientationChangeHandler);
+              startInternal();
+            }
+    
+            screen.orientation.addEventListener('change', orientationChangeHandler);
+          });
+      }
+      start;
 }
 
 
@@ -1244,5 +1263,4 @@ if (window.DeviceOrientationEvent) {
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
-screen.orientation.lock('portrait');
 window.requestAnimationFrame(loop);
