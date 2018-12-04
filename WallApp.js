@@ -723,7 +723,7 @@ function arrow(positionX, positionY, vY) {
     // Public
     this.posX = positionX;
     this.posY = positionY;
-    posYbelow = 0;
+    this.posYbelow = 0;
     this.vy = vY;
 
     this.projectileWidth = 21;
@@ -735,7 +735,7 @@ function arrow(positionX, positionY, vY) {
 
     this.fall = function () {
         if (this.posCanvas) {
-            posYbelow += this.vy;
+            this.posYbelow += this.vy;
         } else if (!this.posCanvas) {
             this.posY += this.vy;
         }
@@ -744,7 +744,7 @@ function arrow(positionX, positionY, vY) {
     this.draw = function () {
 
         // Draw the arrow in both canvas and set delay between them
-        if (this.posY < altoTopCanvasight && posYbelow <= altoBotCanvas) {
+        if (this.posY < altoTopCanvasight && this.posYbelow <= altoBotCanvas) {
             // Top canvas
             this.fall();
             ctx.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posY, 21, 16);
@@ -753,7 +753,7 @@ function arrow(positionX, positionY, vY) {
             ctx.rect(this.posX, this.posY, this.projectileWidth, this.proejctileHeight);
             ctx.stroke();
 
-        } else if (this.posY > altoTopCanvasight && posYbelow <= altoBotCanvas) {
+        } else if (this.posY > altoTopCanvasight && this.posYbelow <= altoBotCanvas) {
 
             if (!this.posCanvas) {
                 // Transition
@@ -764,7 +764,7 @@ function arrow(positionX, positionY, vY) {
                 lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posYbelow, 21, 16);
                 //  pintaPersonaje(true);
                 // Collider
-                lienzo.rect(this.posX, posYbelow, this.projectileWidth, this.proejctileHeight);
+                lienzo.rect(this.posX, this.posYbelow, this.projectileWidth, this.proejctileHeight);
                 lienzo.stroke();
             }
 
@@ -783,7 +783,7 @@ function arrow(positionX, positionY, vY) {
     this.collision = function (player) {
         if (playing) {
             if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
-                (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
+                (this.posYbelow + this.projectileHeight > player.y) && (this.posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
                 sonidoMuerto.play();
                 this.existence = false;
                 gameStates.currentState = gameStates.gameOver();
@@ -1161,6 +1161,13 @@ loop = function () {
 
                 if (player.y_vel < 0) {
                     p.y -= player.y_vel;
+					if (this.enem.attack[0] != null) {
+						// Primero determinamos si se está pintando por abajo
+						if (this.enem.attack[0].posYbelow <= 0){
+						} else {
+						  this.enem.attack[0].posYbelow -= (player.y_vel/10);
+						}      
+					}
                 }
 
                 if (p.y > altoBotCanvas) {
