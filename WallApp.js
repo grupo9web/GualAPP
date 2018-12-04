@@ -285,7 +285,6 @@ window.onload = function () {
     sonidoDragon.volume = 0.1;
 
     if (screenHeight === 640) {
-        console.log("hola hulio");
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.6, maximum-scale=0.6, user-scalable=0');
@@ -312,12 +311,10 @@ window.onload = function () {
 
     if (localStorage.getItem("arrayPuntuaciones") != null) {
         mejoresPuntuaciones = JSON.parse(localStorage.getItem("arrayPuntuaciones"));
-        console.log("No deberia aparecer");
     }
 
     mejoresPuntuaciones.sort(sortNumber);
 
-    //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
         userName = prompt("Please enter your name", "Hulioooo");
@@ -464,7 +461,6 @@ var boton1 = new Button(284, 500, 147, 207);
 function mouseCliked(e) {
     mouseX = e.pageX - menu.offsetLeft;
     mouseY = e.pageY - menu.offsetTop;
-    console.log(curretStateId);
     if (botonJugar.checkClicked() && curretStateId === 0) {
         gameStates.currentState = gameStates.startGame();
         gameStates.currentState;
@@ -501,7 +497,6 @@ function mouseCliked(e) {
             languajeSelected = 0;
         }
         drawOpciones();
-        console.log("SE HA CAMBIADO IDIOMA")
     }
     if (botonMute.checkClicked() && curretStateId === 3) {
         if (mute) {
@@ -869,7 +864,6 @@ function pintaPlataformas() {
 
 
 function gestionColisiones() {
-    console.log(puType);
     if (playing) {
         for (var i = 0; i < plataformas.length; i++) {
             var auxPlat = plataformas[i];
@@ -878,7 +872,6 @@ function gestionColisiones() {
                 (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
                 if (!auxPlat.saltado) {
                     if (doubleJump || invertContols) {
-                        console.log("JumpCounter: " + jumpCounter);
                         if (doubleJump) {
                             player.y_vel = 2 * vy;
                             sonidoSaltoLargo.play();
@@ -1084,12 +1077,15 @@ function gestionPowerUp() {
 }
 
 function setDificultad() {
-    background.src = "wallpp.png";
-    //$("#ejemplo").fadeIn(100);
+
+    document.getElementById("levelup").style.top =  $("#lienzo").offset().top + 25 + "px"; 
+    document.getElementById("levelup").style.left =  $("#lienzo").offset().left + 75 + "px";
+    document.getElementById("levelup").style.display = 'block'
+
 
     function intervalTrigger() {
         return window.setInterval(function () {
-            background.src = "wall.png";
+            document.getElementById("levelup").style.display = 'none'
             window.clearInterval(id);
         }, 1000);
     };
