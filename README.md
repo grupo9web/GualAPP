@@ -74,7 +74,13 @@ Gual App se basa en un scroll vertical que representa la ascensión del muro med
 En cuanto al salto, se producirá con una determinada desviación lateral en función de la orientación del móvil o botón que pulsemos. Si el jugador no presiona ninguna tecla, nuestro personaje saltará de forma totalmente vertical, sin ninguna desviación.
 
 Un enemigo se encargará de lanzar piedras desde la parte de arriba del muro. Si estos objetos colisionan con nuestro personaje, provocará la pérdida de la partida.
-Se le brindarán al personaje power ups que aparecerán aleatoriamente sobre las plataformas y le darán algunas ayudas para escalar el muro.
+
+Se le brindarán al personaje una serie de power ups en forma de orbe que aparecerán aleatoriamente sobre las plataformas. El funcionamiento de estos es el siguiente:
+
+-  **Orbe Rojo**: El poder de Daenerys concederá la oportunidad al jugador de subirse a un dragón para ascender rápido durante un corto período de tiempo.
+-  **Orbe Azul**: Este power up proporciona al jugador la capacidad de dar 3 saltos consecutivos tan altos que ninguna otra persona antes había logrado hacer.
+-  **Orbe Oscuro**: Como no todo puede ser bueno, al coger este orbe los controles del jugador se invierten, de modo que dificulta bastante la escalada durante un breve lapso temporal.
+
 
 ## 2.5 Personajes
 
