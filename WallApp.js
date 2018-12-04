@@ -257,8 +257,8 @@ window.onload = function () {
     var screenWitdth = screen.availWidth;
 
     /*
-    * EFECTOS DE SONIDO
-    */
+     * EFECTOS DE SONIDO
+     */
 
     //salto normal
     sonidoSalto.src = 'bancoSonidos/Salto normal.mp3';
@@ -279,10 +279,10 @@ window.onload = function () {
     sonidoMuerto.load();
     sonidoMuerto.volume = 0.1;
 
-     //Dragon
-     sonidoDragon.src = 'bancoSonidos/sonidoDragon.mp3'
-     sonidoDragon.load();
-     sonidoDragon.volume = 0.1;
+    //Dragon
+    sonidoDragon.src = 'bancoSonidos/sonidoDragon.mp3'
+    sonidoDragon.load();
+    sonidoDragon.volume = 0.1;
 
     if (screenHeight === 640) {
         console.log("hola hulio");
@@ -762,7 +762,7 @@ function arrow(positionX, positionY, vY) {
                 // Bottom canvas
                 this.fall();
                 lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, this.posYbelow, 21, 16);
-
+                //  pintaPersonaje(true);
                 // Collider
                 lienzo.rect(this.posX, posYbelow, this.projectileWidth, this.proejctileHeight);
                 lienzo.stroke();
@@ -868,7 +868,7 @@ function pintaPlataformas() {
 
 
 
-function gestionColisiones() {    
+function gestionColisiones() {
     console.log(puType);
     if (playing) {
         for (var i = 0; i < plataformas.length; i++) {
@@ -1134,7 +1134,7 @@ controller = {
 };
 
 loop = function () {
-    
+
 
     if (playing) {
 
