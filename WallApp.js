@@ -11,48 +11,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//  - Tema powerups: Ahora mismo se generan así: Se genera uno al principio y cuando se mueven las plataformas se recoloco,
-//    al pilallarlo, se saca un random que selecciona el siguiente tipo de powerup que saldrá. Pero no se como hacer para que no salga 
-//    otro powerup hasta que no se haya acabado el efecto del activo.
-//  - Cuando subes de nivel, la primera vez que aparece la pantalla de level up se bugea y no se porqué.
-//  - La velocidad de la piedra sigue turbia.
-//  - Preguntarle el tema del responsiv y enseádle la pagina web para que os diga a ver si necesita algo más.
-//  - Que el audio no se reinicio mientra estés navegando por los menus.
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////       Preguntar        ////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -74,12 +32,9 @@ var altoBotCanvas = bCanvas.height;
 
 var altoTopCanvasight = tCanvas.height;
 
-
 //Variables para la carga de imágenes
 var background = new Image();
-background.src = "wallpp.png";
 background.src = "wall.png";
-
 
 var topBackgorund = new Image();
 topBackgorund.src = "topwall.png"
@@ -177,7 +132,7 @@ var mute = false;
 var audio = document.getElementById('cancion_fondo');
 var sonidoSalto = document.getElementById('sonidoSaltoNormal');
 var sonidoSaltoLargo = document.getElementById('sonidoSaltoLargo');
-var sonidoPowerUp= document.getElementById('sonidoPowerUp');
+var sonidoPowerUp = document.getElementById('sonidoPowerUp');
 var sonidoMuerto = document.getElementById('sonidoMuerto');
 
 
@@ -209,7 +164,10 @@ const gameStates = {
         menu.style.display = "none"
         curretStateId = 1;
         playing = true;
-        if (!firstRun) reset();
+        if (!firstRun) {
+            reset();
+            setDificultad();
+        };
         firstRun = false;
     },
     setUp() {
@@ -302,27 +260,24 @@ window.onload = function () {
     sonidoMuerto.src = 'bancoSonidos/choque piedra.mp3'
     sonidoMuerto.load();
     sonidoMuerto.volume = 0.1;
-    
-    if(screenHeight === 640){
+
+    if (screenHeight === 640) {
         console.log("hola hulio");
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.6, maximum-scale=0.6, user-scalable=0');
-    }
-
-
-    else if(screenHeight === 732){
+    } else if (screenHeight === 732) {
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0');
-    }
-
-    else {
+    } else {
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
             'width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=0');
     }
-    document.body.addEventListener('touchmove', function(e){ e.preventDefault(); });
+    document.body.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+    });
 
 
 
@@ -342,16 +297,14 @@ window.onload = function () {
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulioooo" );
-       if(userName == null){
-           userName = "Jugador";
-       }
-       if (userName.length <= 10)
+        userName = prompt("Please enter your name", "Hulioooo");
+        if (userName == null) {
+            userName = "Jugador";
+        }
+        if (userName.length <= 10)
             nombreCorrecto = true;
-
-       else
+        else
             window.alert("La longitud del nombre debe ser menor a 10 caracteres incluyendo espacios");
-
     }
 };
 
@@ -392,11 +345,6 @@ function drawScores() {
             if (i < 10) lienzoScore.fillText(mejoresPuntuaciones[i].nombre + ": " + mejoresPuntuaciones[i].puntuacion, anchoBotCanvas / 2 - 150, i * 45 + 416);
         }
     };
-
-
-
-
-
 }
 
 function drawOpciones() {
@@ -535,7 +483,6 @@ function mouseCliked(e) {
     if (botonMute.checkClicked() && curretStateId === 3) {
         if (mute) {
             mute = false;
-            window.alert("HAS DESMUTEADO EL JUEGO");
             var audio = document.getElementById('cancion_fondo');
             audio.src = 'musica/Dueto Rains of Castamere.mp3';
             audio.load();
@@ -545,7 +492,6 @@ function mouseCliked(e) {
             mute = true;
             var audio = document.getElementById('cancion_fondo');
             audio.pause();
-            window.alert("HAS MUTEADO EL JUEGO");
 
         }
 
@@ -814,15 +760,15 @@ function arrow(positionX, positionY, vY) {
 
 
     this.collision = function (player) {
-       if(playing) {
-           if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
-               (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
-               sonidoMuerto.play();
-               this.existence = false;
-               gameStates.currentState = gameStates.gameOver();
-               gameStates.currentState;
-           }
-       }
+        if (playing) {
+            if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
+                (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
+                sonidoMuerto.play();
+                this.existence = false;
+                gameStates.currentState = gameStates.gameOver();
+                gameStates.currentState;
+            }
+        }
     }
 }
 
@@ -842,9 +788,7 @@ function getMobileOperatingSystem() {
 
     if (/android/i.test(userAgent)) {
         android = true;
-        window.alert("2: " + android);
 
-        
         document.getElementsByClassName("canvas").style.height = "auto";
         document.getElementsByClassName("canvas").style.width = "100%";
         /*
@@ -854,7 +798,7 @@ function getMobileOperatingSystem() {
         //document.documentElement.requestFullscreen();
         //window.scrollTo(0,1);
 
-        
+
         return "Android";
     }
 
@@ -868,8 +812,7 @@ function getMobileOperatingSystem() {
 
 
 
-function pintaPersonaje(boolAux) {
-    //window.alert(player.x + " " + player.y);      
+function pintaPersonaje(boolAux) { 
     lienzo.drawImage(background, 0, 0);
     ctx.drawImage(topBackgorund, 0, 0);
     gestionPuntuacion();
@@ -901,7 +844,7 @@ function pintaPlataformas() {
 
 
 function gestionColisiones() {
-    if(playing) {
+    if (playing) {
         for (var i = 0; i < plataformas.length; i++) {
             var auxPlat = plataformas[i];
             if (player.y_vel > 0 && (player.x + 15 < auxPlat.x + auxPlat.ancho) && (player.x + player.ancho -
@@ -912,11 +855,11 @@ function gestionColisiones() {
                         player.y_vel = 2 * vy;
                         sonidoSaltoLargo.play();
                         jumpCounter--;
-                    } else{
+                    } else {
                         player.y_vel = vy;
                         sonidoSalto.play();
                         console.log("SAlto normal")
-                    } 
+                    }
                 }
 
                 if (auxPlat.type == 2) {
@@ -946,13 +889,13 @@ function gestionColisiones() {
             if (player.y_vel > 0 && powerup.x > player.x && (powerup.x + powerup.ancho) < (player.x + player.ancho) &&
                 (powerup.y > player.y) && (powerup.y + powerup.alto < player.y + player.alto)
             ) {
-                
+
                 if (powerup.type == 0 && !isPowerUp) {
                     player.y_vel = -20;
                     gravity = 0.1;
                     sonidoPowerUp.play();
                     dragonSprite.src = "pu2.png";
-                    
+
 
                     player.spriteState = 3;
 
@@ -992,7 +935,7 @@ function gestionColisiones() {
 
                     player.spriteState = 4;
 
-                    specialSprites = true;
+                    //specialSprites = true;
                     isPowerUp = true;
 
                     if (!player.isDead) score += 50;
@@ -1007,7 +950,6 @@ function gestionColisiones() {
                         }, 800);
                     };
                     var id = intervalTrigger();
-
 
                 }
             }
@@ -1041,7 +983,7 @@ function reset() {
 function gameOver() {
 
     player.x = -player.ancho - 10;
-    player.y = - 100;
+    player.y = -100;
     player.y_vel = 0;
     gravity = 0;
 
@@ -1050,7 +992,7 @@ function gameOver() {
 
     player.isDead = "fifty";
 
-    if(playing) {
+    if (playing) {
         gameStates.currentState = gameStates.gameOver();
         gameStates.currentState;
     }
@@ -1087,8 +1029,9 @@ function gestionPowerUp() {
 }
 
 function setDificultad() {
-    //background.src = "wallpp.png";
-    $("#ejemplo").fadeIn(100);
+    background.src = "wallpp.png";
+    //$("#ejemplo").fadeIn(100);
+
     function intervalTrigger() {
         return window.setInterval(function () {
             background.src = "wall.png";
@@ -1118,7 +1061,7 @@ controller = {
 
         var key_state = (event.type == "keydown") ? true : false;
         //window.alert("asas");
-        if(playing) {
+        if (playing) {
             switch (event.keyCode) {
 
                 case 37: //Flecha izquierda
@@ -1138,95 +1081,93 @@ controller = {
 
 loop = function () {
 
-  if(playing) {
-      // console.log(puType);
+    if (playing) {
 
-      //Gestión de la velocidad y de los sprites:
+        //Gestión de la velocidad y de los sprites:
 
-      if (controller.left || androidIzquierda && !specialSprites) {
-          if (!isPowerUp) player.spriteState = 1;
-          player.x_vel -= vx;
-      } else if (controller.right || androidDerecha && !specialSprites) {
-          if (!isPowerUp) player.spriteState = 2;
-          player.x_vel += vx;
-      } else if (!specialSprites) {
-          if (!isPowerUp) player.spriteState = 0;
-      } else {
-          androidDerecha = false;
-          androidIzquierda = false;
-      }
-
-
-      //Gestión del movimiento del personaje:
-      if (player.y >= (altoBotCanvas / 2) - (player.alto / 2)) {
-          player.y += player.y_vel;
-          player.y_vel += gravity;
-      } else {
-          plataformas.forEach(function (p, i) {
-
-              if (player.y_vel < 0) {
-                  p.y -= player.y_vel;
-              }
-
-              if (p.y > altoBotCanvas) {
-                  plataformas[i] = new Platform();
-                  plataformas[i].y = p.y - altoBotCanvas;
-              }
-
-          });
-
-          player.y_vel += gravity;
-
-          if (player.y_vel >= 0) {
-              player.y += player.y_vel;
-              player.y_vel += gravity;
-          }
-          //powerupAlive = false;
-      }
-
-      plataformas.forEach(function (p, i) {
-          if (p.type == 1) {
-              if (p.x < 0 || p.x + p.ancho > anchoBotCanvas) {
-                  p.vx *= -1;
-              }
-              p.x += p.vx;
-          }
-      });
+        if (controller.left || androidIzquierda && !specialSprites) {
+            if (!isPowerUp) player.spriteState = 1;
+            player.x_vel -= vx;
+        } else if (controller.right || androidDerecha && !specialSprites) {
+            if (!isPowerUp) player.spriteState = 2;
+            player.x_vel += vx;
+        } else if (!specialSprites) {
+            if (!isPowerUp) player.spriteState = 0;
+        } else {
+            androidDerecha = false;
+            androidIzquierda = false;
+        }
 
 
-      player.x += player.x_vel;
+        //Gestión del movimiento del personaje:
+        if (player.y >= (altoBotCanvas / 2) - (player.alto / 2)) {
+            player.y += player.y_vel;
+            player.y_vel += gravity;
+        } else {
+            plataformas.forEach(function (p, i) {
 
-      player.x_vel *= 0.9; //Eje X
+                if (player.y_vel < 0) {
+                    p.y -= player.y_vel;
+                }
 
-      //Si se sale por la parte izquierda del canvas...
-      if (player.x < -32) {
-          player.x = 520;
-      } else if (player.x > 520) {
-          //Si se sale por laparte derecha...
-          player.x = -32;
-      }
+                if (p.y > altoBotCanvas) {
+                    plataformas[i] = new Platform();
+                    plataformas[i].y = p.y - altoBotCanvas;
+                }
 
-      if (player.y > 580 && player.isDead != "fifty") {
-          player.isDead = "true";
-          //window.alert("ei" + player.isDead);
-      }
+            });
 
-      if (player.isDead == "true") gameOver();
+            player.y_vel += gravity;
 
-      //score++;
-  }
+            if (player.y_vel >= 0) {
+                player.y += player.y_vel;
+                player.y_vel += gravity;
+            }
+            //powerupAlive = false;
+        }
+
+        plataformas.forEach(function (p, i) {
+            if (p.type == 1) {
+                if (p.x < 0 || p.x + p.ancho > anchoBotCanvas) {
+                    p.vx *= -1;
+                }
+                p.x += p.vx;
+            }
+        });
 
 
-      lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
-      ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
+        player.x += player.x_vel;
+
+        player.x_vel *= 0.9; //Eje X
+
+        //Si se sale por la parte izquierda del canvas...
+        if (player.x < -32) {
+            player.x = 520;
+        } else if (player.x > 520) {
+            //Si se sale por laparte derecha...
+            player.x = -32;
+        }
+
+        if (player.y > 580 && player.isDead != "fifty") {
+            player.isDead = "true";
+        }
+
+        if (player.isDead == "true") gameOver();
+
+        //score++;
+    }
 
 
-      gestionPowerUp();
-      gestionColisiones()
-      pintaPersonaje();
-      enem.drawEnemy();
-      pintaPlataformas();
-      window.requestAnimationFrame(loop);
+    lienzo.clearRect(0, 0, bCanvas.width, bCanvas.height);
+    ctx.clearRect(0, 0, anchoBotCanvas, altoBotCanvas);
+
+
+    gestionPowerUp();
+    gestionColisiones()
+    pintaPersonaje();
+    enem.drawEnemy();
+    pintaPlataformas();
+    window.requestAnimationFrame(loop);
 
 }
 
@@ -1243,21 +1184,18 @@ function orientation(event) {
         event.alpha + ", " +
         event.beta + ", " +
         event.gamma;
-   if(playing) {
-       if (event.gamma > 8) {
-           androidDerecha = true;
-       } else {
-           androidDerecha = false;
-       }
-       if (event.gamma < -8) {
-           androidIzquierda = true;
-       } else {
-           androidIzquierda = false;
-       }
-      // document.getElementById("debug").innerHTML = string + " <br/> Isq: " + androidIzquierda + " Dcha: " +
-           androidDerecha;
-       //lienzo.fillText(Math.round(string), 100, 100);
-   }
+    if (playing) {
+        if (event.gamma > 5) {
+            androidDerecha = true;
+        } else {
+            androidDerecha = false;
+        }
+        if (event.gamma < -5) {
+            androidIzquierda = true;
+        } else {
+            androidIzquierda = false;
+        }
+    }
 }
 
 if (window.DeviceOrientationEvent) {
