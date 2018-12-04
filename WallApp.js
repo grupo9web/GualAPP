@@ -63,6 +63,9 @@ jonDragon.src = "drogonn.png";
 var powerup2 = new Image();
 powerup2.src = "purplePowerup.png";
 
+var powerup3 = new Image();
+powerup3.src = "bluePowerup.png"
+
 var powerup2Sprite = new Image();
 powerup2Sprite.src = "pu2Sprite.png";
 var powerup2SpriteI = new Image();
@@ -86,10 +89,12 @@ var position = 0;
 var plataformas = [];
 var powerup;
 var powerupAlive = false;
-var puType = Math.round(Math.random());
+var puType = Math.round(Math.random() * 2);
 var score = 0;
 var jumpCounter = 3;
+
 var doubleJump = false;
+var invertContols = false;
 
 var isPowerUp = false; //Para que no se cambien los sprites cuando estemos con un poweUp activo.
 var androidDerecha = false;
@@ -821,7 +826,7 @@ function getMobileOperatingSystem() {
 
 
 
-function pintaPersonaje(boolAux) { 
+function pintaPersonaje(boolAux) {
     lienzo.drawImage(background, 0, 0);
     ctx.drawImage(topBackgorund, 0, 0);
     gestionPuntuacion();
@@ -832,9 +837,13 @@ function pintaPersonaje(boolAux) {
     if (player.spriteState == 4) lienzo.drawImage(powerup2Sprite, player.x, player.y);
     if (player.spriteState == 4 && controller.left || androidIzquierda) lienzo.drawImage(powerup2SpriteI, player.x, player.y);
     if (player.spriteState == 4 && controller.right || androidDerecha) lienzo.drawImage(powerup2SpriteD, player.x, player.y);
+    if (player.spriteState == 5) lienzo.drawImage(jon, player.x, player.y);
+    if (player.spriteState == 5 && controller.left || androidIzquierda) lienzo.drawImage(jonLeft, player.x, player.y);
+    if (player.spriteState == 5 && controller.right || androidDerecha) lienzo.drawImage(jonRight, player.x, player.y);
 
     if (powerup.type == 0) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
     else if (powerup.type == 1) lienzo.drawImage(powerup2, powerup.x, powerup.y);
+    else if (powerup.type == 2) lienzo.drawImage(powerup3, powerup.x, powerup.y);
 
 }
 
@@ -852,7 +861,8 @@ function pintaPlataformas() {
 
 
 
-function gestionColisiones() {
+function gestionColisiones() {    
+    console.log(puType);
     if (playing) {
         for (var i = 0; i < plataformas.length; i++) {
             var auxPlat = plataformas[i];
@@ -860,14 +870,20 @@ function gestionColisiones() {
                     15 > auxPlat.x) &&
                 (player.y + player.alto > auxPlat.y) && (player.y + player.alto < auxPlat.y + auxPlat.alto)) {
                 if (!auxPlat.saltado) {
-                    if (doubleJump) {
-                        player.y_vel = 2 * vy;
-                        sonidoSaltoLargo.play();
+                    if (doubleJump || invertContols) {
+                        console.log("JumpCounter: " + jumpCounter);
+                        if (doubleJump) {
+                            player.y_vel = 2 * vy;
+                            sonidoSaltoLargo.play();
+                        }
+                        if (invertContols) {
+                            sonidoSalto.play();
+                            player.y_vel = vy;
+                        }
                         jumpCounter--;
                     } else {
                         player.y_vel = vy;
                         sonidoSalto.play();
-                        console.log("SAlto normal")
                     }
                 }
 
@@ -883,9 +899,13 @@ function gestionColisiones() {
                 }
 
                 if (jumpCounter == 0) {
+
                     doubleJump = false;
+                    invertContols = false;
+
                     jumpCounter = 3;
                     player.spriteState = 0;
+
                     specialSprites = false;
                     isPowerUp = false;
                 }
@@ -916,7 +936,7 @@ function gestionColisiones() {
                     //Intervalo para el PU
                     function intervalTrigger() {
                         return window.setInterval(function () {
-                            puType = Math.round(Math.random());
+                            puType = Math.round(Math.random() * 2);
                             gravity = 0.2;
                             dragonSprite.src = "pu1.png";
 
@@ -952,7 +972,7 @@ function gestionColisiones() {
                     //Intervalo para el PU
                     function intervalTrigger() {
                         return window.setInterval(function () {
-                            puType = Math.round(Math.random());
+                            puType = Math.round(Math.random() * 2);
                             powerup2.src = "purplePowerup.png";
 
                             window.clearInterval(id);
@@ -960,6 +980,25 @@ function gestionColisiones() {
                     };
                     var id = intervalTrigger();
 
+                } else if (powerup.type == 2 && !isPowerUp) {
+
+                    powerup3.src = "pu2.png";
+
+                    invertContols = true;
+                    player.spriteState = 5;
+                    jumpCounter = 5;
+
+                    isPowerUp = true;
+
+                    //Intervalo para el PU
+                    function intervalTrigger() {
+                        return window.setInterval(function () {
+                            puType = Math.round(Math.random() * 3);
+                            powerup3.src = "bluePowerup.png";
+                            window.clearInterval(id);
+                        }, 800);
+                    };
+                    var id = intervalTrigger();
                 }
             }
         }
@@ -1069,7 +1108,6 @@ controller = {
     keyListener: function (event) {
 
         var key_state = (event.type == "keydown") ? true : false;
-        //window.alert("asas");
         if (playing) {
             switch (event.keyCode) {
 
@@ -1096,17 +1134,15 @@ loop = function () {
 
         if (controller.left || androidIzquierda && !specialSprites) {
             if (!isPowerUp) player.spriteState = 1;
-            player.x_vel -= vx;
+            if (invertContols) player.x_vel += vx;
+            else player.x_vel -= vx;
         } else if (controller.right || androidDerecha && !specialSprites) {
             if (!isPowerUp) player.spriteState = 2;
-            player.x_vel += vx;
+            if (invertContols) player.x_vel -= vx;
+            else player.x_vel += vx;
         } else if (!specialSprites) {
             if (!isPowerUp) player.spriteState = 0;
-        } else {
-            //androidDerecha = false;
-            //androidIzquierda = false;
         }
-
 
         //Gestión del movimiento del personaje:
         if (player.y >= (altoBotCanvas / 2) - (player.alto / 2)) {
@@ -1180,13 +1216,9 @@ loop = function () {
 
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// MEJORES PUNTUACIONES JUANPE /////////////////////////////////////////////////
 function sortNumber(a, b) {
     return b.puntuacion - a.puntuacion;
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function orientation(event) {
     if (playing) {
