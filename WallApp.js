@@ -290,6 +290,7 @@ window.onload = function () {
     gameStates.currentState;
 
 
+    //Descomentar si se quiere limpiar la tabla de puntuaciones, de lo contrario las puntuaciones se guardarán.
     //localStorage.clear();
 
     if (localStorage.getItem("arrayPuntuaciones") != null) {
