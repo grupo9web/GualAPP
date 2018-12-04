@@ -813,14 +813,15 @@ function arrow(positionX, positionY, vY) {
 
 
     this.collision = function (player) {
-        if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
-            (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
-            sonidoMuerto.play();
-            this.existence = false;
-            gameStates.currentState = gameStates.gameOver();
-            gameStates.currentState;
-        }
-
+       if(playing) {
+           if (player.x < this.posX && (player.x + player.ancho) > (this.posX + this.projectileWidth) &&
+               (posYbelow + this.projectileHeight > player.y) && (posYbelow + this.projectileHeight) < (player.y + player.alto + 10)) {
+               sonidoMuerto.play();
+               this.existence = false;
+               gameStates.currentState = gameStates.gameOver();
+               gameStates.currentState;
+           }
+       }
     }
 }
 
