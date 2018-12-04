@@ -51,6 +51,7 @@ dragonSprite.src = "pu1.png";
 var jon = new Image();
 jon.src = 'Jon.png';
 
+
 var jonLeft = new Image();
 jonLeft.src = 'JonI.png';
 
@@ -614,7 +615,6 @@ function Platform() {
 
 };
 
-
 for (var i = 0; i < platformCount; i++) {
     plataformas.push(new Platform());
 }
@@ -685,7 +685,7 @@ var enemy = function () {
 
     // Check pos in canvas to set direction
     this.checkPos = function () {
-        if (this.vx && (this.x + this.width) >= 400) {
+        if (this.vx && (this.x + this.width) >= 500) {
             this.vx = false;
         } else if (!this.vx && this.x <= 0) {
             this.vx = true;
@@ -1118,6 +1118,7 @@ controller = {
 };
 
 loop = function () {
+    
 
     if (playing) {
 
