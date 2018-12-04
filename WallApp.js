@@ -278,18 +278,18 @@ window.onload = function () {
     var screenHeight = screen.availHeight;
     var screenWitdth = screen.availWidth;
 
-    if(screenHeight == 640){
+    if(screenHeight === 640){
+        console.log("hola hulio");
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
-            'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0');
-
+            'width=device-width, initial-scale=0.6, maximum-scale=0.6, user-scalable=0');
     }
 
 
-    else if(screenHeight== 732){
+    else if(screenHeight === 732){
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
-            'width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=0');
+            'width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0');
     }
 
     else {
@@ -317,7 +317,7 @@ window.onload = function () {
     //console.log("El contenido del array es: " + mejoresPuntuaciones); //[1, 2, 3]
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulio" );
+        userName = prompt("Please enter your name", "Hulioooo" );
         if (userName.length <= 10)
             nombreCorrecto = true;
 
