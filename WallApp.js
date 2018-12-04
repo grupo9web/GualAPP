@@ -77,6 +77,7 @@ var altoTopCanvasight = tCanvas.height;
 
 //Variables para la carga de imágenes
 var background = new Image();
+background.src = "wallpp.png";
 background.src = "wall.png";
 
 
@@ -979,7 +980,7 @@ function reset() {
 function gameOver() {
 
     player.x = -player.ancho - 10;
-    player.y = 0;
+    player.y = - 100;
     player.y_vel = 0;
     gravity = 0;
 
@@ -1023,8 +1024,8 @@ function gestionPowerUp() {
 }
 
 function setDificultad() {
-    background.src = "wallpp.png";
-
+    //background.src = "wallpp.png";
+    $("#ejemplo").fadeIn(100);
     function intervalTrigger() {
         return window.setInterval(function () {
             background.src = "wall.png";
