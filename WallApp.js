@@ -1221,12 +1221,12 @@ function sortNumber(a, b) {
 
 function orientation(event) {
     if (playing) {
-        if (event.gamma > 5) {
+        if (event.gamma > 6) {
             androidDerecha = true;
         } else {
             androidDerecha = false;
         }
-        if (event.gamma < -5) {
+        if (event.gamma < -6) {
             androidIzquierda = true;
         } else {
             androidIzquierda = false;
