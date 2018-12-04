@@ -11,6 +11,9 @@ Para moverte por los menús utiliza la entrada táctil. Para mover al personaje 
 Puedes jugar a GualAPP haciendo click en este enlace https://grupo9web.github.io/GualAPP/
 
 
+Puedes acceder a nuestra web mediante este enlace https://grupo9web.github.io/WebHulioEntertainment/;
+
+
 ## Gual App - Documento de Diseño
 
 
