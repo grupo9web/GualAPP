@@ -295,7 +295,7 @@ window.onload = function () {
     else {
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
-            'width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=0');
+            'width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=0');
     }
 
 
