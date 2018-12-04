@@ -274,9 +274,30 @@ const gameStates = {
 window.onload = function () {
     //getMobileOperatingSystem();
 
-    var viewport = document.getElementById("viewport");
+    //var viewport = document.getElementById("viewport");
     var screenHeight = screen.availHeight;
     var screenWitdth = screen.availWidth;
+
+    if(screenHeight < 641){
+        document.querySelector("meta[name=viewport]").setAttribute(
+            'content',
+            'width=device-width, initial-scale=2.0, maximum-scale=2.0, user-scalable=0');
+
+    }
+
+
+    if(screenHeight < 733){
+        document.querySelector("meta[name=viewport]").setAttribute(
+            'content',
+            'width=device-width, initial-scale=1.5, maximum-scale=1.5, user-scalable=0');
+    }
+
+    if(screenHeight > 733){
+        document.querySelector("meta[name=viewport]").setAttribute(
+            'content',
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+    }
+
 
 
 
