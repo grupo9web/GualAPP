@@ -1244,5 +1244,5 @@ if (window.DeviceOrientationEvent) {
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
-window.screen.orientation.lock("portrait-primary");
+screen.orientation.lock('portrait');
 window.requestAnimationFrame(loop);
