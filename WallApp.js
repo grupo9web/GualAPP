@@ -1,19 +1,3 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////       Preguntarle a Palacios             ////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 var loop, controller;
 
 var bCanvas = document.getElementById("lienzo");
@@ -29,7 +13,6 @@ var ctx = tCanvas.getContext("2d");
 
 var anchoBotCanvas = bCanvas.width;
 var altoBotCanvas = bCanvas.height;
-
 var altoTopCanvasight = tCanvas.height;
 
 //Variables para la carga de imágenes
@@ -94,10 +77,10 @@ var platformCount = 8;
 var gravity = 0.2;
 var vx = 0.5;
 var vy = -9;
+var posYbelow;
 var position = 0;
 var plataformas = [];
 var powerup;
-var powerupAlive = false;
 var puType = Math.round(Math.random() * 2);
 var score = 0;
 var jumpCounter = 3;
@@ -111,13 +94,11 @@ var androidIzquierda = false;
 var firstRun = true;
 var userName;
 var specialSprites = false;
-var heEntrado = false;
 var scoreUploaded = false;
 var newLevel = 0;
 var mejoresPuntuaciones = new Array();
 var android = false;
 
-var posYbelow;
 
 
 
@@ -181,7 +162,6 @@ const gameStates = {
         playing = true;
         if (!firstRun) {
             reset();
-            setDificultad();
         };
         firstRun = false;
     },
@@ -1008,10 +988,18 @@ function gestionColisiones() {
 
 function reset() {
 
+    playing = true;
     position = 0;
     score = 0;
     gravity = 0.2;
     player.isDead = false;
+
+    newLevel = 0;
+    jumpCounter = 0;
+    isPowerUp = false;
+    specialSprites = false;
+    doubleJump = false;
+    invertContols = false;
 
     player = new Player();
 
@@ -1061,7 +1049,6 @@ function gestionPowerUp() {
             x: plataformas[2].x + plataformas[2].ancho / 2 - 25 / 2,
             y: plataformas[2].y - plataformas[2].alto,
         }
-        powerupAlive = true;
     } else {
         powerup = {
             ancho: 25,
@@ -1078,8 +1065,8 @@ function gestionPowerUp() {
 
 function setDificultad() {
 
-    document.getElementById("levelup").style.top =  $("#lienzo").offset().top + 25 + "px"; 
-    document.getElementById("levelup").style.left =  $("#lienzo").offset().left + 75 + "px";
+    document.getElementById("levelup").style.top = $("#lienzo").offset().top + 25 + "px";
+    document.getElementById("levelup").style.left = $("#lienzo").offset().left + 75 + "px";
     document.getElementById("levelup").style.display = 'block'
 
     function intervalTrigger() {
@@ -1156,13 +1143,12 @@ loop = function () {
 
                 if (player.y_vel < 0) {
                     p.y -= player.y_vel;
-					if (this.enem.attack[0] != null) {
-						// Primero determinamos si se está pintando por abajo
-						if (this.enem.attack[0].posYbelow <= 0){
-						} else {
-						  this.enem.attack[0].posYbelow -= (player.y_vel/10);
-						}      
-					}
+                    if (this.enem.attack[0] != null) {
+                        // Primero determinamos si se está pintando por abajo
+                        if (this.enem.attack[0].posYbelow <= 0) {} else {
+                            this.enem.attack[0].posYbelow -= (player.y_vel / 10);
+                        }
+                    }
                 }
 
                 if (p.y > altoBotCanvas) {
@@ -1178,7 +1164,6 @@ loop = function () {
                 player.y += player.y_vel;
                 player.y_vel += gravity;
             }
-            //powerupAlive = false;
         }
 
         plataformas.forEach(function (p, i) {
