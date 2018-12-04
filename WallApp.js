@@ -74,6 +74,14 @@ powerup2SpriteI.src = "pu2SpriteI.png";
 var powerup2SpriteD = new Image();
 powerup2SpriteD.src = "pu2SpriteD.png";
 
+var powerup3Sprite = new Image();
+powerup3Sprite.src = "pu3Sprite.png";
+var powerup3SpriteI = new Image();
+powerup3SpriteI.src = "pu3SpriteI.png";
+var powerup3SpriteD = new Image();
+powerup3SpriteD.src = "pu3SpriteD.png";
+
+
 //Sprites de enemigo + pierda
 espanha = document.getElementById('sprite');
 espania = document.getElementById('walker');
@@ -754,7 +762,6 @@ function arrow(positionX, positionY, vY) {
                 // Bottom canvas
                 this.fall();
                 lienzo.drawImage(espanha, 0, 0, this.projectileWidth, this.projectileHeight, this.posX, posYbelow, 21, 16);
-                //  pintaPersonaje(true);
 
                 // Collider
                 lienzo.rect(this.posX, posYbelow, this.projectileWidth, this.proejctileHeight);
@@ -837,9 +844,9 @@ function pintaPersonaje(boolAux) {
     if (player.spriteState == 4) lienzo.drawImage(powerup2Sprite, player.x, player.y);
     if (player.spriteState == 4 && controller.left || androidIzquierda) lienzo.drawImage(powerup2SpriteI, player.x, player.y);
     if (player.spriteState == 4 && controller.right || androidDerecha) lienzo.drawImage(powerup2SpriteD, player.x, player.y);
-    if (player.spriteState == 5) lienzo.drawImage(jon, player.x, player.y);
-    if (player.spriteState == 5 && controller.left || androidIzquierda) lienzo.drawImage(jonLeft, player.x, player.y);
-    if (player.spriteState == 5 && controller.right || androidDerecha) lienzo.drawImage(jonRight, player.x, player.y);
+    if (player.spriteState == 5) lienzo.drawImage(powerup3Sprite, player.x, player.y);
+    if (player.spriteState == 5 && controller.left || androidIzquierda) lienzo.drawImage(powerup3SpriteI, player.x, player.y);
+    if (player.spriteState == 5 && controller.right || androidDerecha) lienzo.drawImage(powerup3SpriteD, player.x, player.y);
 
     if (powerup.type == 0) lienzo.drawImage(dragonSprite, powerup.x, powerup.y);
     else if (powerup.type == 1) lienzo.drawImage(powerup2, powerup.x, powerup.y);
