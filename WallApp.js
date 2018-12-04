@@ -295,7 +295,7 @@ window.onload = function () {
     else {
         document.querySelector("meta[name=viewport]").setAttribute(
             'content',
-            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+            'width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=0');
     }
 
 
@@ -318,10 +318,13 @@ window.onload = function () {
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
         userName = prompt("Please enter your name", "Hulioooo" );
-        if (userName.length <= 10)
+       if(userName == null){
+           userName = "Jugador";
+       }
+       if (userName.length <= 10)
             nombreCorrecto = true;
 
-        else
+       else
             window.alert("La longitud del nombre debe ser menor a 10 caracteres incluyendo espacios");
 
     }
