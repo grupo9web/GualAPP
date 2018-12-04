@@ -303,7 +303,7 @@ window.onload = function () {
 
     var nombreCorrecto = false;
     while (!nombreCorrecto) {
-        userName = prompt("Please enter your name", "Hulioooo");
+        userName = prompt("Please enter your name", "Hulio");
         if (userName == null) {
             userName = "Jugador";
         }
